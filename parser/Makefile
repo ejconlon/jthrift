@@ -1,13 +1,15 @@
 all: tparse
 
 clean:
-	rm thrifty.tab.cc lex.yy.cc tparse
+	rm thrifty.cc thrifty.hh thriftl.cc tparse
 
-thrifty.tab.cc: thrifty.yy
+thrifty.cc: thrifty.yy
 	bison -d -o $@ $^
 
-lex.yy.cc: thriftl.ll
+thrifty.hh: thrifty.cc
+
+thriftl.cc: thriftl.ll thrifty.hh
 	lex -o $@ $^
 
-tparse: thrifty.tab.cc lex.yy.cc
-	g++ -o $@ *.cc parser/*.cc
+tparse: thrifty.cc thriftl.cc
+	g++ -o $@ *.cc parser/*.cc generator/*.cc
