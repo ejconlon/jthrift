@@ -53,7 +53,7 @@ const int struct_is_union = 1;
  */
 %union {
   char*          id;
-  int64_t        iconst;
+  long           iconst;
   double         dconst;
   bool           tbool;
   t_doc*         tdoc;
