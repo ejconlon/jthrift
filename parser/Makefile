@@ -1,7 +1,10 @@
 all: tparse
 
+Thrifty.java: thrifty.jy
+	bison --language=java -o $@ $^
+
 clean:
-	rm thrifty.cc thrifty.hh thriftl.cc tparse
+	rm thrifty.cc thrifty.hh thriftl.cc tparse Thrifty.java
 
 thrifty.cc: thrifty.yy
 	bison -d -o $@ $^
