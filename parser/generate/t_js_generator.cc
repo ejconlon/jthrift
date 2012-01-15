@@ -26,8 +26,8 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <sstream>
-#include "platform.h"
-#include "version.h"
+#include "../platform.h"
+#include "../version.h"
 
 using namespace std;
 

@@ -27,7 +27,7 @@
 #include <sys/stat.h>
 #include <sstream>
 #include "t_generator.h"
-#include "platform.h"
+#include "../platform.h"
 using namespace std;
 
 

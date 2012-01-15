@@ -28,8 +28,8 @@
 #include <sstream>
 
 #include "t_oop_generator.h"
-#include "platform.h"
-#include "version.h"
+#include "../platform.h"
+#include "../version.h"
 
 using namespace std;
 

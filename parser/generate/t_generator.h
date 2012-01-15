@@ -24,8 +24,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include "parse/t_program.h"
-#include "globals.h"
+#include "../parse/t_program.h"
+#include "../globals.h"
 #include "t_generator_registry.h"
 
 /**

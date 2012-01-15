@@ -30,7 +30,7 @@
 #include <sys/stat.h>
 #include <sstream>
 
-#include "platform.h"
+#include "../platform.h"
 #include "t_oop_generator.h"
 
 using namespace std;

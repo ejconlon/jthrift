@@ -27,8 +27,8 @@
 #include <sys/types.h>
 #include <sstream>
 #include "t_generator.h"
-#include "platform.h"
-#include "version.h"
+#include "../platform.h"
+#include "../version.h"
 
 using namespace std;
 

@@ -23,9 +23,9 @@
 #include <string>
 #include <iostream>
 
-#include "globals.h"
+#include "../globals.h"
 #include "t_generator.h"
-#include "version.h"
+#include "../version.h"
 
 #include <algorithm>
 

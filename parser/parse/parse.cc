@@ -1,7 +1,7 @@
 #include "t_type.h"
 #include "t_typedef.h"
 
-#include "md5.h"
+#include "../md5.h"
 
 void t_type::generate_fingerprint() {
   std::string material = get_fingerprint_material();

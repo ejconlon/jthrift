@@ -32,9 +32,9 @@
 #include <sys/types.h>
 #include <sstream>
 
-#include "platform.h"
+#include "../platform.h"
 #include "t_oop_generator.h"
-#include "version.h"
+#include "../version.h"
 
 using namespace std;
 

@@ -26,7 +26,7 @@
 #include <sys/stat.h>
 #include <sstream>
 #include "t_oop_generator.h"
-#include "platform.h"
+#include "../platform.h"
 using namespace std;
 
 #define NSGLOBAL  (nsglobal_.size() ? nsglobal_ : "")
