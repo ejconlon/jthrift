@@ -1,1 +1,3 @@
 A port of the Thrift IDL parser + code generator to Java.
+
+Contains code from the Apache-licensed Thrift project.  See *.thrift files in cparser/ for details.
