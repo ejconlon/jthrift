@@ -12,4 +12,4 @@ thriftl.cc: thriftl.ll thrifty.hh
 	lex -o $@ $^
 
 tparse: thrifty.cc thriftl.cc
-	g++ -o $@ *.cc parser/*.cc generator/*.cc
+	g++ -o $@ *.cc parse/*.cc generate/*.cc
