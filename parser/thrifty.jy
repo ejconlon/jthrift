@@ -25,27 +25,17 @@
  *
  */
 
-public class Thrifty {
-
-//#define __STDC_LIMIT_MACROS
-//#define __STDC_FORMAT_MACROS
-//#include <stdio.h>
-//#include <inttypes.h>
-//#include <limits.h>
-//#include "main.h"
-//#include "globals.h"
-//#include "parse/t_program.h"
-//#include "parse/t_scope.h"
-
+class C {
 /**
  * This global variable is used for automatic numbering of field indices etc.
  * when parsing the members of a struct. Field values are automatically
  * assigned starting from -1 and working their way down.
  */
-int y_field_val = -1;
-int g_arglist = 0;
-final int struct_is_struct = 0;
-final int struct_is_union = 1;
+static int y_field_val = -1;
+static int g_arglist = 0;
+static final int struct_is_struct = 0;
+static final int struct_is_union = 1;
+}
 
 %}
 
@@ -706,11 +696,11 @@ ConstMapContents:
 StructHead:
   tok_struct
     {
-      $$ = struct_is_struct;
+      $$ = C.struct_is_struct;
     }
 | tok_union
     {
-      $$ = struct_is_union;
+      $$ = C.struct_is_union;
     }
 
 Struct:
@@ -718,7 +708,7 @@ Struct:
     {
       pdebug("Struct . tok_struct tok_identifier { FieldList }");
       $5.set_xsd_all($3);
-      $5.set_union($1 == struct_is_union);
+      $5.set_union($1 == C.struct_is_union);
       $$ = $5;
       $$.set_name($2);
       if ($7 != NULL) {
@@ -787,12 +777,12 @@ Service:
 
 FlagArgs:
     {
-       g_arglist = 1;
+       C.g_arglist = 1;
     }
 
 UnflagArgs:
     {
-       g_arglist = 0;
+       C.g_arglist = 0;
     }
 
 Extends:
@@ -874,7 +864,7 @@ FieldList:
 |
     {
       pdebug("FieldList . ");
-      y_field_val = -1;
+      C.y_field_val = -1;
       $$ = new TStruct(g_program);
     }
 
@@ -920,25 +910,25 @@ FieldIdentifier:
            * specified key values to old .thrift files without breaking
            * protocol compatibility.
            */
-          if ($1 != y_field_val) {
+          if ($1 != C.y_field_val) {
             /*
              * warn if the user-specified negative value isn't what
              * thrift would have auto-assigned.
              */
             pwarning(1, "Negative field key (%d) differs from what would be "+
-                     "auto-assigned by thrift (%d).\n", $1, y_field_val);
+                     "auto-assigned by thrift (%d).\n", $1, C.y_field_val);
           }
           /*
            * Leave $1 as-is, and update y_field_val to be one less than $1.
            * The FieldList parsing will catch any duplicate key values.
            */
-          y_field_val = $1 - 1;
+          C.y_field_val = $1 - 1;
           $$.value = $1;
           $$.auto_assigned = false;
         } else {
           pwarning(1, "Nonpositive value (%d) not allowed as a field key.\n",
                    $1);
-          $$.value = y_field_val--;
+          $$.value = C.y_field_val--;
           $$.auto_assigned = true;
         }
       } else {
@@ -948,7 +938,7 @@ FieldIdentifier:
     }
 |
     {
-      $$.value = y_field_val--;
+      $$.value = C.y_field_val--;
       $$.auto_assigned = true;
     }
 
@@ -959,7 +949,7 @@ FieldRequiredness:
     }
 | tok_optional
     {
-      if (g_arglist) {
+      if (C.g_arglist) {
         if (g_parse_mode == PROGRAM) {
           pwarning(1, "optional keyword is ignored in argument lists.\n");
         }
@@ -1187,6 +1177,4 @@ TypeAnnotation:
     }
 
 %%
-
-}  // end class Thrifty
 

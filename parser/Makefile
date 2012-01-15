@@ -1,10 +1,10 @@
 all: tparse
 
-Thrifty.java: thrifty.jy
+YYParser.java: thrifty.jy
 	bison --language=java -o $@ $^
 
 clean:
-	rm thrifty.cc thrifty.hh thriftl.cc tparse Thrifty.java
+	rm thrifty.cc thrifty.hh thriftl.cc tparse YYParser.java *.class
 
 thrifty.cc: thrifty.yy
 	bison -d -o $@ $^
