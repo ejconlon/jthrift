@@ -6,57 +6,57 @@ public class Context {
      * when parsing the members of a struct. Field values are automatically
      * assigned starting from -1 and working their way down.
      */
-    public long y_field_val = -1;
-    public int g_arglist = 0;
-    public final int struct_is_struct = 0;
-    public final int struct_is_union = 1;
+    public long fieldVal = -1;
+    public int arglist = 0;
+    public final int structIsStruct = 0;
+    public final int structIsUnion = 1;
 
     public static enum ParseMode {
         INCLUDES, PROGRAM
     };
-    public ParseMode g_parse_mode = ParseMode.PROGRAM;
+    public ParseMode parseMode = ParseMode.PROGRAM;
 
-    public int g_doctest_lineno;
-    public String g_doctext;
+    public int doctestLineno;
+    public String doctext;
 
     public void clear_doctext() {
-        if (g_doctext != null) {
-            pwarning(2, "Uncaptured doctext: "+g_doctext);
+        if (doctext != null) {
+            pwarning(2, "Uncaptured doctext: "+doctext);
         }
-        g_doctext = null;
+        doctext = null;
     }
 
     /**
      * The master program parse tree. This is accessed from within the parser code
      * to build up the program elements.
      */
-    public TProgram g_program;
+    public TProgram program;
 
     /**
      * Global types for the parser to be able to reference
      */
 
-    public TType g_type_void;
-    public TType g_type_string;
-    public TType g_type_binary;
-    public TType g_type_slist;
-    public TType g_type_bool;
-    public TType g_type_byte;
-    public TType g_type_i16;
-    public TType g_type_i32;
-    public TType g_type_i64;
-    public TType g_type_double;
+    public TType typeVoid;
+    public TType typeString;
+    public TType typeBinary;
+    public TType typeSlist;
+    public TType typeBool;
+    public TType typeByte;
+    public TType typeI16;
+    public TType typeI32;
+    public TType typeI64;
+    public TType typeDouble;
 
-    public TScope g_scope;
+    public TScope scope;
 
-    public TScope g_parent_scope;
+    public TScope parentScope;
 
-    public String g_parent_prefix;
+    public String parentPrefix;
 
-    public boolean g_allow_64bit_consts = true;
-    public boolean g_allow_neg_field_keys = false;
+    public boolean allow64bitConsts = true;
+    public boolean allowNegFieldKeys = false;
 
-    public int g_strict = 127;
+    public int strict = 127;
 
     public void pdebug(String msg) {
         System.out.println("DEBUG: "+msg);
@@ -67,17 +67,25 @@ public class Context {
     }
 
     public Id includeFile(Id path) {
+        // TODO
         return path;
     }
 
     public void resolveConstValue(TConstValue value, TType type) {
-
+        // TODO
     }
 
-    public void validateConstType(TConst value) {}
+    public void validateConstType(TConst value) {
+        // TODO
+    }
 
-    public boolean validateThrows(TStruct struct) { return false; }
+    public boolean validateThrows(TStruct struct) {
+        // TODO
+        return true;
+    }
 
-    public void validateFieldValue(TField field, TConstValue value) {}
+    public void validateFieldValue(TField field, TConstValue value) {
+        // TODO
+    }
 
 }
