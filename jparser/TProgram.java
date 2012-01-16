@@ -1,25 +1,25 @@
 package jthrift;
 
-public class TProgram {
-    public void setDoc(String a) {}
+public class TProgram implements Node {
+    public void setDoc(DText a) {}
 
-    public void setNamespace(String a, String b) {}
+    public void setNamespace(Id a, Id b) {}
 
-    public void addCppInclude(String a) {}
+    public void addCppInclude(Id a) {}
 
-    public void addInclude(String a) {}
+    public void addInclude(Id a, Id b) {}
 
-    public void addConst(String a) {}
+    public void addConst(TConst a) {}
 
-    public void addType(String a, String b) {}
+    public void addType(Id a, Id b) {}
 
-    public void addService(String a) {}
+    public void addService(TService a) {}
 
-    public void addTypedef(String a) {}
+    public void addTypedef(TTypedef a) {}
 
-    public void addEnum(String a) {}
+    public void addEnum(TEnum a) {}
 
-    public void addStruct(String a) {}
+    public void addStruct(TStruct a) {}
 
-    public void addXception(String a) {}
+    public void addXception(TStruct a) {}
 }

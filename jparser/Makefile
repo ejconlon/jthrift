@@ -7,4 +7,4 @@ clean:
 	rm YYParser.java *.class
 
 jparse: YYParser.java
-	javac YYParser.java
+	javac *.java

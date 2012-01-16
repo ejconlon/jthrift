@@ -24,114 +24,32 @@
  * This parser is used on a thrift definition file.
  *
  */
-
-class C {
-/**
- * This global variable is used for automatic numbering of field indices etc.
- * when parsing the members of a struct. Field values are automatically
- * assigned starting from -1 and working their way down.
- */
-static int y_field_val = -1;
-static int g_arglist = 0;
-static final int struct_is_struct = 0;
-static final int struct_is_union = 1;
-
-public static enum ParseMode {
-    INCLUDES, PROGRAM
-};
-static ParseMode g_parse_mode = ParseMode.PROGRAM;
-
-static int g_doctest_lineno;
-static String g_doctext;
-
-static void clear_doctext() {
-  if (C.g_doctext != null) {
-    pwarning(2, "Uncaptured doctext: "+C.g_doctext);
-  }
-  C.g_doctext = null;
-}
-
-/**
- * The master program parse tree. This is accessed from within the parser code
- * to build up the program elements.
- */
-static TProgram g_program;
-
-/**
- * Global types for the parser to be able to reference
- */
-
-static TProgram g_type_void;
-static TProgram g_type_string;
-static TProgram g_type_binary;
-static TProgram g_type_slist;
-static TProgram g_type_bool;
-static TProgram g_type_byte;
-static TProgram g_type_i16;
-static TProgram g_type_i32;
-static TProgram g_type_i64;
-static TProgram g_type_double;
-
-static TScope g_scope;
-
-static TScope g_parent_scope;
-
-static String g_parent_prefix;
-
-static bool g_allow_64bit_consts = true;
-
-static void pdebug(String msg) {
-    System.out.println("DEBUG: "+msg);
-}
-
-static void pwarning(int level, String msg) {
-    System.out.println("WARN ("+level+"): "+msg);
-}
-
-}
-
 %}
 
-/**
- * This structure is used by the parser to hold the data types associated with
- * various parse nodes.
- */
-%union {
-  String         id;
-  long           iconst;
-  double         dconst;
-  boolean        tbool;
-  TDoc           tdoc;
-  TType          ttype;
-  TBaseType      tbase;
-  TTypedef       ttypedef;
-  TEnum          tenum;
-  TEnumValue     tenumv;
-  TConst         tconst;
-  TConstValue    tconstv;
-  TStruct        tstruct;
-  TService       tservice;
-  TFunction      tfunction;
-  TField         tfield;
-  String         dtext;
-  TField.EReq    ereq;
-  TAnnotation    tannot;
-  TFieldId       tfieldid;
+%code imports {
+package jthrift;
+
+import java.util.List;
+
+class C {
+      static Context c = new Context();
+}
+
 }
 
 /**
  * Strings identifier
  */
-%token<id>     tok_identifier
-%token<id>     tok_literal
-%token<dtext>  tok_doctext
-%token<id>     tok_st_identifier
+%token<Id>     tok_identifier
+%token<Id>     tok_literal
+%token<DText>      tok_doctext
+%token<Id>     tok_st_identifier
 
 /**
  * Constant values
  */
-%token<iconst> tok_int_constant
-%token<dconst> tok_dub_constant
+%token<IConst> tok_int_constant
+%token<DConst> tok_dub_constant
 
 /**
  * Header keywords
@@ -203,64 +121,64 @@ static void pwarning(int level, String msg) {
  * Grammar nodes
  */
 
-%type<ttype>     BaseType
-%type<ttype>     SimpleBaseType
-%type<ttype>     ContainerType
-%type<ttype>     SimpleContainerType
-%type<ttype>     MapType
-%type<ttype>     SetType
-%type<ttype>     ListType
+%type<TType>     BaseType
+%type<TType>     SimpleBaseType
+%type<TType>     ContainerType
+%type<TType>     SimpleContainerType
+%type<TType>     MapType
+%type<TType>     SetType
+%type<TType>     ListType
 
-%type<tdoc>      Definition
-%type<ttype>     TypeDefinition
+%type<TDoc>      Definition
+%type<TType>     TypeDefinition
 
-%type<ttypedef>  Typedef
+%type<TTypedef>  Typedef
 
-%type<ttype>     TypeAnnotations
-%type<ttype>     TypeAnnotationList
-%type<tannot>    TypeAnnotation
+%type<TType>     TypeAnnotations
+%type<TType>     TypeAnnotationList
+%type<TAnnot>    TypeAnnotation
 
-%type<tfield>    Field
-%type<tfieldid>  FieldIdentifier
-%type<ereq>      FieldRequiredness
-%type<ttype>     FieldType
-%type<tconstv>   FieldValue
-%type<tstruct>   FieldList
+%type<TField>    Field
+%type<TFieldId>  FieldIdentifier
+%type<EReq>      FieldRequiredness
+%type<TType>     FieldType
+%type<TConstValue>   FieldValue
+%type<TStruct>   FieldList
 
-%type<tenum>     Enum
-%type<tenum>     EnumDefList
-%type<tenumv>    EnumDef
+%type<TEnum>     Enum
+%type<TEnum>     EnumDefList
+%type<TEnumValue> EnumDef
 
-%type<ttypedef>  Senum
-%type<tbase>     SenumDefList
-%type<id>        SenumDef
+%type<TTypedef>  Senum
+%type<TBase>     SenumDefList
+%type<Id>        SenumDef
 
-%type<tconst>    Const
-%type<tconstv>   ConstValue
-%type<tconstv>   ConstList
-%type<tconstv>   ConstListContents
-%type<tconstv>   ConstMap
-%type<tconstv>   ConstMapContents
+%type<TConst>    Const
+%type<TConstValue>   ConstValue
+%type<TConstValue>   ConstList
+%type<TConstValue>   ConstListContents
+%type<TConstValue>   ConstMap
+%type<TConstValue>   ConstMapContents
 
-%type<iconst>    StructHead
-%type<tstruct>   Struct
-%type<tstruct>   Xception
-%type<tservice>  Service
+%type<IConst>    StructHead
+%type<TStruct>   Struct
+%type<TStruct>   Xception
+%type<TService>  Service
 
-%type<tfunction> Function
-%type<ttype>     FunctionType
-%type<tservice>  FunctionList
+%type<TFunction> Function
+%type<TType>     FunctionType
+%type<TService>  FunctionList
 
-%type<tstruct>   Throws
-%type<tservice>  Extends
-%type<tbool>     Oneway
-%type<tbool>     XsdAll
-%type<tbool>     XsdOptional
-%type<tbool>     XsdNillable
-%type<tstruct>   XsdAttributes
-%type<id>        CppType
+%type<TStruct>   Throws
+%type<TService>  Extends
+%type<TBool>     Oneway
+%type<TBool>     XsdAll
+%type<TBool>     XsdOptional
+%type<TBool>     XsdNillable
+%type<TStruct>   XsdAttributes
+%type<Id>        CppType
 
-%type<dtext>     CaptureDocText
+%type<DText>     CaptureDocText
 
 %%
 
@@ -275,21 +193,21 @@ static void pwarning(int level, String msg) {
 Program:
   HeaderList DefinitionList
     {
-      C.pdebug("Program . Headers DefinitionList");
+      C.c.pdebug("Program . Headers DefinitionList");
       /*
       TODO(dreiss): Decide whether full-program doctext is worth the trouble.
       if ($1 != null) {
-        C.g_program.setDoc($1);
+        C.c.g_program.setDoc($1);
       }
       */
-      C.clear_doctext();
+      C.c.clear_doctext();
     }
 
 CaptureDocText:
     {
-      if (C.g_parse_mode == C.ParseMode.PROGRAM) {
-        $$ = C.g_doctext;
-        C.g_doctext = null;
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
+        $$ = C.c.g_doctext;
+        C.c.g_doctext = null;
       } else {
         $$ = null;
       }
@@ -298,8 +216,8 @@ CaptureDocText:
 /* TODO(dreiss): Try to DestroyDocText in all sorts or random places. */
 DestroyDocText:
     {
-      if (C.g_parse_mode == C.ParseMode.PROGRAM) {
-        C.clear_doctext();
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
+        C.c.clear_doctext();
       }
     }
 
@@ -308,155 +226,155 @@ DestroyDocText:
 HeaderList:
   HeaderList DestroyDocText Header
     {
-      C.pdebug("HeaderList . HeaderList Header");
+      C.c.pdebug("HeaderList . HeaderList Header");
     }
 |
     {
-      C.pdebug("HeaderList . ");
+      C.c.pdebug("HeaderList . ");
     }
 
 Header:
   Include
     {
-      C.pdebug("Header . Include");
+      C.c.pdebug("Header . Include");
     }
 | tok_namespace tok_identifier tok_identifier
     {
-      C.pdebug("Header . tok_namespace tok_identifier tok_identifier");
-      if (C.g_parse_mode == C.ParseMode.PROGRAM) {
-        C.g_program.setNamespace($2, $3);
+      C.c.pdebug("Header . tok_namespace tok_identifier tok_identifier");
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
+        C.c.g_program.setNamespace($2, $3);
       }
     }
 | tok_namespace '*' tok_identifier
     {
-      C.pdebug("Header . tok_namespace * tok_identifier");
-      if (C.g_parse_mode == C.ParseMode.PROGRAM) {
-        C.g_program.setNamespace("*", $3);
+      C.c.pdebug("Header . tok_namespace * tok_identifier");
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
+        C.c.g_program.setNamespace(new Id("*"), $3);
       }
     }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
 | tok_cpp_namespace tok_identifier
     {
-      C.pwarning(1, "'cpp_namespace' is deprecated. Use 'namespace cpp' instead");
-      C.pdebug("Header . tok_cpp_namespace tok_identifier");
-      if (C.g_parse_mode == C.ParseMode.PROGRAM) {
-        C.g_program.setNamespace("cpp", $2);
+      C.c.pwarning(1, "'cpp_namespace' is deprecated. Use 'namespace cpp' instead");
+      C.c.pdebug("Header . tok_cpp_namespace tok_identifier");
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
+        C.c.g_program.setNamespace(new Id("cpp"), $2);
       }
     }
 | tok_cpp_include tok_literal
     {
-      C.pdebug("Header . tok_cpp_include tok_literal");
-      if (C.g_parse_mode == C.ParseMode.PROGRAM) {
-        C.g_program.addCppInclude($2);
+      C.c.pdebug("Header . tok_cpp_include tok_literal");
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
+        C.c.g_program.addCppInclude($2);
       }
     }
 | tok_php_namespace tok_identifier
     {
-      C.pwarning(1, "'php_namespace' is deprecated. Use 'namespace php' instead");
-      C.pdebug("Header . tok_php_namespace tok_identifier");
-      if (C.g_parse_mode == C.ParseMode.PROGRAM) {
-        C.g_program.setNamespace("php", $2);
+      C.c.pwarning(1, "'php_namespace' is deprecated. Use 'namespace php' instead");
+      C.c.pdebug("Header . tok_php_namespace tok_identifier");
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
+        C.c.g_program.setNamespace(new Id("php"), $2);
       }
     }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
 | tok_py_module tok_identifier
     {
-      C.pwarning(1, "'py_module' is deprecated. Use 'namespace py' instead");
-      C.pdebug("Header . tok_py_module tok_identifier");
-      if (C.g_parse_mode == C.ParseMode.PROGRAM) {
-        C.g_program.setNamespace("py", $2);
+      C.c.pwarning(1, "'py_module' is deprecated. Use 'namespace py' instead");
+      C.c.pdebug("Header . tok_py_module tok_identifier");
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
+        C.c.g_program.setNamespace(new Id("py"), $2);
       }
     }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
 | tok_perl_package tok_identifier
     {
-      C.pwarning(1, "'perl_package' is deprecated. Use 'namespace perl' instead");
-      C.pdebug("Header . tok_perl_namespace tok_identifier");
-      if (C.g_parse_mode == C.ParseMode.PROGRAM) {
-        C.g_program.setNamespace("perl", $2);
+      C.c.pwarning(1, "'perl_package' is deprecated. Use 'namespace perl' instead");
+      C.c.pdebug("Header . tok_perl_namespace tok_identifier");
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
+        C.c.g_program.setNamespace(new Id("perl"), $2);
       }
     }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
 | tok_ruby_namespace tok_identifier
     {
-      C.pwarning(1, "'ruby_namespace' is deprecated. Use 'namespace rb' instead");
-      C.pdebug("Header . tok_ruby_namespace tok_identifier");
-      if (C.g_parse_mode == C.ParseMode.PROGRAM) {
-        C.g_program.setNamespace("rb", $2);
+      C.c.pwarning(1, "'ruby_namespace' is deprecated. Use 'namespace rb' instead");
+      C.c.pdebug("Header . tok_ruby_namespace tok_identifier");
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
+        C.c.g_program.setNamespace(new Id("rb"), $2);
       }
     }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
 | tok_smalltalk_category tok_st_identifier
     {
-      C.pwarning(1, "'smalltalk_category' is deprecated. Use 'namespace smalltalk.category' instead");
-      C.pdebug("Header . tok_smalltalk_category tok_st_identifier");
-      if (C.g_parse_mode == C.ParseMode.PROGRAM) {
-        C.g_program.setNamespace("smalltalk.category", $2);
+      C.c.pwarning(1, "'smalltalk_category' is deprecated. Use 'namespace smalltalk.category' instead");
+      C.c.pdebug("Header . tok_smalltalk_category tok_st_identifier");
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
+        C.c.g_program.setNamespace(new Id("smalltalk.category"), $2);
       }
     }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
 | tok_smalltalk_prefix tok_identifier
     {
-      C.pwarning(1, "'smalltalk_prefix' is deprecated. Use 'namespace smalltalk.prefix' instead");
-      C.pdebug("Header . tok_smalltalk_prefix tok_identifier");
-      if (C.g_parse_mode == C.ParseMode.PROGRAM) {
-        C.g_program.setNamespace("smalltalk.prefix", $2);
+      C.c.pwarning(1, "'smalltalk_prefix' is deprecated. Use 'namespace smalltalk.prefix' instead");
+      C.c.pdebug("Header . tok_smalltalk_prefix tok_identifier");
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
+        C.c.g_program.setNamespace(new Id("smalltalk.prefix"), $2);
       }
     }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
 | tok_java_package tok_identifier
     {
-      C.pwarning(1, "'java_package' is deprecated. Use 'namespace java' instead");
-      C.pdebug("Header . tok_java_package tok_identifier");
-      if (C.g_parse_mode == C.ParseMode.PROGRAM) {
-        C.g_program.setNamespace("java", $2);
+      C.c.pwarning(1, "'java_package' is deprecated. Use 'namespace java' instead");
+      C.c.pdebug("Header . tok_java_package tok_identifier");
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
+        C.c.g_program.setNamespace(new Id("java"), $2);
       }
     }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
 | tok_cocoa_prefix tok_identifier
     {
-      C.pwarning(1, "'cocoa_prefix' is deprecated. Use 'namespace cocoa' instead");
-      C.pdebug("Header . tok_cocoa_prefix tok_identifier");
-      if (C.g_parse_mode == C.ParseMode.PROGRAM) {
-        C.g_program.setNamespace("cocoa", $2);
+      C.c.pwarning(1, "'cocoa_prefix' is deprecated. Use 'namespace cocoa' instead");
+      C.c.pdebug("Header . tok_cocoa_prefix tok_identifier");
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
+        C.c.g_program.setNamespace(new Id("cocoa"), $2);
       }
     }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
 | tok_xsd_namespace tok_literal
     {
-      C.pwarning(1, "'xsd_namespace' is deprecated. Use 'namespace xsd' instead");
-      C.pdebug("Header . tok_xsd_namespace tok_literal");
-      if (C.g_parse_mode == C.ParseMode.PROGRAM) {
-        C.g_program.setNamespace("cocoa", $2);
+      C.c.pwarning(1, "'xsd_namespace' is deprecated. Use 'namespace xsd' instead");
+      C.c.pdebug("Header . tok_xsd_namespace tok_literal");
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
+        C.c.g_program.setNamespace(new Id("cocoa"), $2);
       }
     }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
 | tok_csharp_namespace tok_identifier
    {
-     C.pwarning(1, "'csharp_namespace' is deprecated. Use 'namespace csharp' instead");
-     C.pdebug("Header . tok_csharp_namespace tok_identifier");
-     if (C.g_parse_mode == C.ParseMode.PROGRAM) {
-       C.g_program.setNamespace("csharp", $2);
+     C.c.pwarning(1, "'csharp_namespace' is deprecated. Use 'namespace csharp' instead");
+     C.c.pdebug("Header . tok_csharp_namespace tok_identifier");
+     if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
+       C.c.g_program.setNamespace(new Id("csharp"), $2);
      }
    }
 /* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
 | tok_delphi_namespace tok_identifier
    {
-     C.pwarning(1, "'delphi_namespace' is deprecated. Use 'namespace delphi' instead");
-     C.pdebug("Header . tok_delphi_namespace tok_identifier");
-     if (C.g_parse_mode == C.ParseMode.PROGRAM) {
-       C.g_program.setNamespace("delphi", $2);
+     C.c.pwarning(1, "'delphi_namespace' is deprecated. Use 'namespace delphi' instead");
+     C.c.pdebug("Header . tok_delphi_namespace tok_identifier");
+     if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
+       C.c.g_program.setNamespace(new Id("delphi"), $2);
      }
    }
 
 Include:
   tok_include tok_literal
     {
-      C.pdebug("Include . tok_include tok_literal");
-      if (C.g_parse_mode == C.ParseMode.INCLUDES) {
-        String path = include_file(new String($2));
-        if (!path.empty()) {
-          C.g_program.addInclude(path, new String($2));
+      C.c.pdebug("Include . tok_include tok_literal");
+      if (C.c.g_parse_mode == Context.ParseMode.INCLUDES) {
+        Id path = C.c.include_file($2);
+        if (path.getValue().length() > 0) {
+          C.c.g_program.addInclude(path, $2);
         }
       }
     }
@@ -464,45 +382,45 @@ Include:
 DefinitionList:
   DefinitionList CaptureDocText Definition
     {
-      C.pdebug("DefinitionList . DefinitionList Definition");
+      C.c.pdebug("DefinitionList . DefinitionList Definition");
       if ($2 != null && $3 != null) {
         $3.setDoc($2);
       }
     }
 |
     {
-      C.pdebug("DefinitionList . ");
+      C.c.pdebug("DefinitionList . ");
     }
 
 Definition:
   Const
     {
-      C.pdebug("Definition . Const");
-      if (C.g_parse_mode == C.ParseMode.PROGRAM) {
-        C.g_program.addConst($1);
+      C.c.pdebug("Definition . Const");
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
+        C.c.g_program.addConst($1);
       }
       $$ = $1;
     }
 | TypeDefinition
     {
-      C.pdebug("Definition . TypeDefinition");
-      if (C.g_parse_mode == C.ParseMode.PROGRAM) {
-        g_scope.addType($1.getName(), $1);
-        if (C.g_parent_scope != null) {
-          g_parent_scope.addType(C.g_parent_prefix + $1.getName(), $1);
+      C.c.pdebug("Definition . TypeDefinition");
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
+        C.c.g_scope.addType($1.getName(), $1);
+        if (C.c.g_parent_scope != null) {
+          C.c.g_parent_scope.addType(C.c.g_parent_prefix + $1.getName(), $1);
         }
       }
       $$ = $1;
     }
 | Service
     {
-      C.pdebug("Definition . Service");
-      if (C.g_parse_mode == C.ParseMode.PROGRAM) {
-        C.g_scope.addService($1.getName(), $1);
-        if (C.g_parent_scope != null) {
-          C.g_parent_scope.addService(C.g_parent_prefix + $1.getName(), $1);
+      C.c.pdebug("Definition . Service");
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
+        C.c.g_scope.addService($1.getName(), $1);
+        if (C.c.g_parent_scope != null) {
+          C.c.g_parent_scope.addService(C.c.g_parent_prefix + $1.getName(), $1);
         }
-        C.g_program.addService($1);
+        C.c.g_program.addService($1);
       }
       $$ = $1;
     }
@@ -510,45 +428,45 @@ Definition:
 TypeDefinition:
   Typedef
     {
-      C.pdebug("TypeDefinition . Typedef");
-      if (C.g_parse_mode == C.ParseMode.PROGRAM) {
-        C.g_program.addTypedef($1);
+      C.c.pdebug("TypeDefinition . Typedef");
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
+        C.c.g_program.addTypedef($1);
       }
     }
 | Enum
     {
-      C.pdebug("TypeDefinition . Enum");
-      if (C.g_parse_mode == C.ParseMode.PROGRAM) {
-        C.g_program.addEnum($1);
+      C.c.pdebug("TypeDefinition . Enum");
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
+        C.c.g_program.addEnum($1);
       }
     }
 | Senum
     {
-      C.pdebug("TypeDefinition . Senum");
-      if (C.g_parse_mode == C.ParseMode.PROGRAM) {
-        C.g_program.addTypedef($1);
+      C.c.pdebug("TypeDefinition . Senum");
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
+        C.c.g_program.addTypedef($1);
       }
     }
 | Struct
     {
-      C.pdebug("TypeDefinition . Struct");
-      if (C.g_parse_mode == C.ParseMode.PROGRAM) {
-        C.g_program.addStruct($1);
+      C.c.pdebug("TypeDefinition . Struct");
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
+        C.c.g_program.addStruct($1);
       }
     }
 | Xception
     {
-      C.pdebug("TypeDefinition . Xception");
-      if (C.g_parse_mode == C.ParseMode.PROGRAM) {
-        C.g_program.addXception($1);
+      C.c.pdebug("TypeDefinition . Xception");
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
+        C.c.g_program.addXception($1);
       }
     }
 
 Typedef:
   tok_typedef FieldType tok_identifier
     {
-      C.pdebug("TypeDef . tok_typedef FieldType tok_identifier");
-      TTypedef *td = new TTypedef(C.g_program, $2, $3);
+      C.c.pdebug("TypeDef . tok_typedef FieldType tok_identifier");
+      TTypedef td = new TTypedef(C.c.g_program, $2, $3);
       $$ = td;
     }
 
@@ -563,20 +481,21 @@ CommaOrSemicolonOptional:
 Enum:
   tok_enum tok_identifier '{' EnumDefList '}'
     {
-      C.pdebug("Enum . tok_enum tok_identifier { EnumDefList }");
+      C.c.pdebug("Enum . tok_enum tok_identifier { EnumDefList }");
       $$ = $4;
-      $$.setName($2);
-      $$.resolveValues();
+      TEnum tenum = (TEnum)$$;
+      tenum.setName($2);
+      tenum.resolveValues();
       // make constants for all the enum values
-      if (C.g_parse_mode == C.ParseMode.PROGRAM) {
-        List<TEnumValue> enum_values = $$.getConstants();
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
+        List<TEnumValue> enum_values = tenum.getConstants();
         for (TEnumValue value : enum_values) {
-          String const_name = $$.getName() + "." + value.getName();
+          String const_name = tenum.getName() + "." + value.getName();
           TConstValue const_val = new TConstValue(value.getValue());
-          const_val.seTEnum($$);
-          g_scope.addConstant(const_name, new TConstValue(C.g_type_i32, value.getName(), const_val));
-          if (C.g_parent_scope != null) {
-            g_parent_scope.addConstant(C.g_parent_prefix + const_name, new TConst(C.g_type_i32, value.getName(), const_val));
+          const_val.setEnum(tenum);
+          C.c.g_scope.addConstant(const_name, new TConstValue(C.c.g_type_i32, value.getName(), const_val));
+          if (C.c.g_parent_scope != null) {
+            C.c.g_parent_scope.addConstant(C.c.g_parent_prefix + const_name, new TConst(C.c.g_type_i32, value.getName(), const_val));
           }
         }
       }
@@ -585,58 +504,58 @@ Enum:
 EnumDefList:
   EnumDefList EnumDef
     {
-      C.pdebug("EnumDefList . EnumDefList EnumDef");
+      C.c.pdebug("EnumDefList . EnumDefList EnumDef");
       $$ = $1;
-      $$.append($2);
+      ((TEnum)$$).append($2);
     }
 |
     {
-      C.pdebug("EnumDefList . ");
-      $$ = new TEnum(C.g_program);
+      C.c.pdebug("EnumDefList . ");
+      $$ = new TEnum(C.c.g_program);
     }
 
 EnumDef:
   CaptureDocText tok_identifier '=' tok_int_constant CommaOrSemicolonOptional
     {
-      C.pdebug("EnumDef . tok_identifier = tok_int_constant");
-      if ($4 < 0) {
-        C.pwarning(1, "Negative value supplied for enum "+$2+".\n");
+      C.c.pdebug("EnumDef . tok_identifier = tok_int_constant");
+      if ($4.getLong() < 0) {
+        C.c.pwarning(1, "Negative value supplied for enum "+$2+".\n");
       }
-      if ($4 > INT_MAX) {
-        C.pwarning(1, "64-bit value supplied for enum "+$2+".\n");
+      if ($4.getLong() > Integer.MAX_VALUE) {
+        C.c.pwarning(1, "64-bit value supplied for enum "+$2+".\n");
       }
       $$ = new TEnumValue($2, $4);
       if ($1 != null) {
-        $$.setDoc($1);
+        ((TEnumValue)$$).setDoc($1);
       }
     }
 |
   CaptureDocText tok_identifier CommaOrSemicolonOptional
     {
-      C.pdebug("EnumDef . tok_identifier");
+      C.c.pdebug("EnumDef . tok_identifier");
       $$ = new TEnumValue($2);
       if ($1 != null) {
-        $$.setDoc($1);
+        ((TEnumValue)$$).setDoc($1);
       }
     }
 
 Senum:
   tok_senum tok_identifier '{' SenumDefList '}'
     {
-      C.pdebug("Senum . tok_senum tok_identifier { SenumDefList }");
-      $$ = new TTypedef(C.g_program, $4, $2);
+      C.c.pdebug("Senum . tok_senum tok_identifier { SenumDefList }");
+      $$ = new TTypedef(C.c.g_program, $4, $2);
     }
 
 SenumDefList:
   SenumDefList SenumDef
     {
-      C.pdebug("SenumDefList . SenumDefList SenumDef");
+      C.c.pdebug("SenumDefList . SenumDefList SenumDef");
       $$ = $1;
       $$.addStringEnumVal($2);
     }
 |
     {
-      C.pdebug("SenumDefList . ");
+      C.c.pdebug("SenumDefList . ");
       $$ = new TBaseType("string", TBaseType.TYPE_STRING);
       $$.setStringEnum(true);
     }
@@ -644,22 +563,22 @@ SenumDefList:
 SenumDef:
   tok_literal CommaOrSemicolonOptional
     {
-      C.pdebug("SenumDef . tok_literal");
+      C.c.pdebug("SenumDef . tok_literal");
       $$ = $1;
     }
 
 Const:
   tok_const FieldType tok_identifier '=' ConstValue CommaOrSemicolonOptional
     {
-      C.pdebug("Const . tok_const FieldType tok_identifier = ConstValue");
-      if (C.g_parse_mode == C.ParseMode.PROGRAM) {
+      C.c.pdebug("Const . tok_const FieldType tok_identifier = ConstValue");
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
         g_scope.resolve_const_value($5, $2);
         $$ = new TConst($2, $3, $5);
         validate_const_type($$);
 
         g_scope.addConstant($3, $$);
-        if (C.g_parent_scope != null) {
-          g_parent_scope.addConstant(C.g_parent_prefix + $3, $$);
+        if (C.c.g_parent_scope != null) {
+          g_parent_scope.addConstant(C.c.g_parent_prefix + $3, $$);
         }
       } else {
         $$ = null;
@@ -669,58 +588,58 @@ Const:
 ConstValue:
   tok_int_constant
     {
-      C.pdebug("ConstValue => tok_int_constant");
+      C.c.pdebug("ConstValue => tok_int_constant");
       $$ = new TConstValue();
       $$.setInteger($1);
-      if (!g_allow_64bit_consts && ($1 < Integer.MIN_VALUE || $1 > Integer.MAX_VALUE)) {
-        C.pwarning(1, "64-bit constant may not work in all languages.\n"+$1);
+      if (!g_allow_64bit_consts && ($1.getLong() < Integer.MIN_VALUE || $1.getLong() > Integer.MAX_VALUE)) {
+        C.c.pwarning(1, "64-bit constant may not work in all languages.\n"+$1);
       }
     }
 | tok_dub_constant
     {
-      C.pdebug("ConstValue => tok_dub_constant");
+      C.c.pdebug("ConstValue => tok_dub_constant");
       $$ = new TConstValue();
       $$.setDouble($1);
     }
 | tok_literal
     {
-      C.pdebug("ConstValue => tok_literal");
+      C.c.pdebug("ConstValue => tok_literal");
       $$ = new TConstValue($1);
     }
 | tok_identifier
     {
-      C.pdebug("ConstValue => tok_identifier");
+      C.c.pdebug("ConstValue => tok_identifier");
       $$ = new TConstValue();
       $$.setIdentifier($1);
     }
 | ConstList
     {
-      C.pdebug("ConstValue => ConstList");
+      C.c.pdebug("ConstValue => ConstList");
       $$ = $1;
     }
 | ConstMap
     {
-      C.pdebug("ConstValue => ConstMap");
+      C.c.pdebug("ConstValue => ConstMap");
       $$ = $1;
     }
 
 ConstList:
   '[' ConstListContents ']'
     {
-      C.pdebug("ConstList => [ ConstListContents ]");
+      C.c.pdebug("ConstList => [ ConstListContents ]");
       $$ = $2;
     }
 
 ConstListContents:
   ConstListContents ConstValue CommaOrSemicolonOptional
     {
-      C.pdebug("ConstListContents => ConstListContents ConstValue CommaOrSemicolonOptional");
+      C.c.pdebug("ConstListContents => ConstListContents ConstValue CommaOrSemicolonOptional");
       $$ = $1;
       $$.addList($2);
     }
 |
     {
-      C.pdebug("ConstListContents =>");
+      C.c.pdebug("ConstListContents =>");
       $$ = new TConstValue();
       $$.setList();
     }
@@ -728,20 +647,20 @@ ConstListContents:
 ConstMap:
   '{' ConstMapContents '}'
     {
-      C.pdebug("ConstMap => { ConstMapContents }");
+      C.c.pdebug("ConstMap => { ConstMapContents }");
       $$ = $2;
     }
 
 ConstMapContents:
   ConstMapContents ConstValue ':' ConstValue CommaOrSemicolonOptional
     {
-      C.pdebug("ConstMapContents => ConstMapContents ConstValue CommaOrSemicolonOptional");
+      C.c.pdebug("ConstMapContents => ConstMapContents ConstValue CommaOrSemicolonOptional");
       $$ = $1;
       $$.addMap($2, $4);
     }
 |
     {
-      C.pdebug("ConstMapContents =>");
+      C.c.pdebug("ConstMapContents =>");
       $$ = new TConstValue();
       $$.seTMap();
     }
@@ -749,19 +668,19 @@ ConstMapContents:
 StructHead:
   tok_struct
     {
-      $$ = C.struct_is_struct;
+      $$ = C.c.struct_is_struct;
     }
 | tok_union
     {
-      $$ = C.struct_is_union;
+      $$ = C.c.struct_is_union;
     }
 
 Struct:
   StructHead tok_identifier XsdAll '{' FieldList '}' TypeAnnotations
     {
-      C.pdebug("Struct . tok_struct tok_identifier { FieldList }");
+      C.c.pdebug("Struct . tok_struct tok_identifier { FieldList }");
       $5.setXsdAll($3);
-      $5.setUnion($1 == C.struct_is_union);
+      $5.setUnion($1 == C.c.struct_is_union);
       $$ = $5;
       $$.setName($2);
       if ($7 != null) {
@@ -812,7 +731,7 @@ XsdAttributes:
 Xception:
   tok_xception tok_identifier '{' FieldList '}'
     {
-      C.pdebug("Xception . tok_xception tok_identifier { FieldList }");
+      C.c.pdebug("Xception . tok_xception tok_identifier { FieldList }");
       $4.setName($2);
       $4.setXception(true);
       $$ = $4;
@@ -821,7 +740,7 @@ Xception:
 Service:
   tok_service tok_identifier Extends '{' FlagArgs FunctionList UnflagArgs '}'
     {
-      C.pdebug("Service . tok_service tok_identifier { FunctionList }");
+      C.c.pdebug("Service . tok_service tok_identifier { FunctionList }");
       $$ = $6;
       $$.setName($2);
       $$.setExtends($3);
@@ -829,20 +748,20 @@ Service:
 
 FlagArgs:
     {
-       C.g_arglist = 1;
+       C.c.g_arglist = 1;
     }
 
 UnflagArgs:
     {
-       C.g_arglist = 0;
+       C.c.g_arglist = 0;
     }
 
 Extends:
   tok_extends tok_identifier
     {
-      C.pdebug("Extends . tok_extends tok_identifier");
+      C.c.pdebug("Extends . tok_extends tok_identifier");
       $$ = null;
-      if (C.g_parse_mode == C.ParseMode.PROGRAM) {
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
         $$ = g_scope.geTService($2);
         if ($$ == null) {
           yyerror("Service \"%s\" has not been defined.", $2);
@@ -858,20 +777,20 @@ Extends:
 FunctionList:
   FunctionList Function
     {
-      C.pdebug("FunctionList . FunctionList Function");
+      C.c.pdebug("FunctionList . FunctionList Function");
       $$ = $1;
       $1.addFunction($2);
     }
 |
     {
-      C.pdebug("FunctionList . ");
-      $$ = new TService(C.g_program);
+      C.c.pdebug("FunctionList . ");
+      $$ = new TService(C.c.g_program);
     }
 
 Function:
   CaptureDocText Oneway FunctionType tok_identifier '(' FieldList ')' Throws CommaOrSemicolonOptional
     {
-      $6.setName(new String($4) + "_args");
+      $6.setName($4 + "_args");
       $$ = new TFunction($3, $4, $6, $8, $2);
       if ($1 != null) {
         $$.setDoc($1);
@@ -891,22 +810,22 @@ Oneway:
 Throws:
   tok_throws '(' FieldList ')'
     {
-      C.pdebug("Throws . tok_throws ( FieldList )");
+      C.c.pdebug("Throws . tok_throws ( FieldList )");
       $$ = $3;
-      if (C.g_parse_mode == C.ParseMode.PROGRAM && !validate_throws($$)) {
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM && !validate_throws($$)) {
         yyerror("Throws clause may not contain non-exception types");
         exit(1);
       }
     }
 |
     {
-      $$ = new TStruct(C.g_program);
+      $$ = new TStruct(C.c.g_program);
     }
 
 FieldList:
   FieldList Field
     {
-      C.pdebug("FieldList . FieldList , Field");
+      C.c.pdebug("FieldList . FieldList , Field");
       $$ = $1;
       if (!($$.append($2))) {
         yyerror("Field identifier %d for \"%s\" has already been used", $2.getKey(), $2.getName());
@@ -915,18 +834,18 @@ FieldList:
     }
 |
     {
-      C.pdebug("FieldList . ");
-      C.y_field_val = -1;
-      $$ = new TStruct(C.g_program);
+      C.c.pdebug("FieldList . ");
+      C.c.y_field_val = -1;
+      $$ = new TStruct(C.c.g_program);
     }
 
 Field:
   CaptureDocText FieldIdentifier FieldRequiredness FieldType tok_identifier FieldValue XsdOptional XsdNillable XsdAttributes TypeAnnotations CommaOrSemicolonOptional
     {
-      C.pdebug("tok_int_constant : Field . FieldType tok_identifier");
+      C.c.pdebug("tok_int_constant : Field . FieldType tok_identifier");
       if ($2.auto_assigned) {
-        C.pwarning(1, "No field key specified for "+$5+", resulting protocol may have conflicts or not be backwards compatible!\n");
-        if (C.g_strict >= 192) {
+        C.c.pwarning(1, "No field key specified for "+$5+", resulting protocol may have conflicts or not be backwards compatible!\n");
+        if (C.c.g_strict >= 192) {
           yyerror("Implicit field keys are deprecated and not allowed with -strict");
           exit(1);
         }
@@ -935,7 +854,7 @@ Field:
       $$.setReq($3);
       if ($6 != null) {
         g_scope.resolveConstValue($6, $4);
-        C.validateFieldValue($$, $6);
+        C.c.validateFieldValue($$, $6);
         $$.setValue($6);
       }
       $$.setXsdOptional($7);
@@ -954,31 +873,31 @@ Field:
 FieldIdentifier:
   tok_int_constant ':'
     {
-      if ($1 <= 0) {
-        if (C.g_allow_neg_field_keys) {
+      if ($1.getLong() <= 0) {
+        if (C.c.g_allow_neg_field_keys) {
           /*
            * g_allow_neg_field_keys exists to allow users to add explicitly
            * specified key values to old .thrift files without breaking
            * protocol compatibility.
            */
-          if ($1 != C.y_field_val) {
+          if ($1 != C.c.y_field_val) {
             /*
              * warn if the user-specified negative value isn't what
              * thrift would have auto-assigned.
              */
-            C.pwarning(1, "Negative field key ("+$1+") differs from what would be "+
-                     "auto-assigned by thrift ("+C.y_field_val+").\n");
+            C.c.pwarning(1, "Negative field key ("+$1+") differs from what would be "+
+                     "auto-assigned by thrift ("+C.c.y_field_val+").\n");
           }
           /*
            * Leave $1 as-is, and update y_field_val to be one less than $1.
            * The FieldList parsing will catch any duplicate key values.
            */
-          C.y_field_val = $1 - 1;
+          C.c.y_field_val = $1 - 1;
           $$.value = $1;
           $$.autoAssigned = false;
         } else {
-          C.pwarning(1, "Nonpositive value ("+$1+") not allowed as a field key.\n");
-          $$.value = C.y_field_val--;
+          C.c.pwarning(1, "Nonpositive value ("+$1+") not allowed as a field key.\n");
+          $$.value = C.c.y_field_val--;
           $$.auto_assigned = true;
         }
       } else {
@@ -988,7 +907,7 @@ FieldIdentifier:
     }
 |
     {
-      $$.value = C.y_field_val--;
+      $$.value = C.c.y_field_val--;
       $$.auto_assigned = true;
     }
 
@@ -999,9 +918,9 @@ FieldRequiredness:
     }
 | tok_optional
     {
-      if (C.g_arglist) {
-        if (C.g_parse_mode == C.ParseMode.PROGRAM) {
-          C.pwarning(1, "optional keyword is ignored in argument lists.\n");
+      if (C.c.g_arglist) {
+        if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
+          C.c.pwarning(1, "optional keyword is ignored in argument lists.\n");
         }
         $$ = TField.T_OPT_IN_REQ_OUT;
       } else {
@@ -1016,7 +935,7 @@ FieldRequiredness:
 FieldValue:
   '=' ConstValue
     {
-      if (C.g_parse_mode == C.ParseMode.PROGRAM) {
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
         $$ = $2;
       } else {
         $$ = null;
@@ -1030,20 +949,20 @@ FieldValue:
 FunctionType:
   FieldType
     {
-      C.pdebug("FunctionType . FieldType");
+      C.c.pdebug("FunctionType . FieldType");
       $$ = $1;
     }
 | tok_void
     {
-      C.pdebug("FunctionType . tok_void");
-      $$ = g_type_void;
+      C.c.pdebug("FunctionType . tok_void");
+      $$ = C.c.g_type_void;
     }
 
 FieldType:
   tok_identifier
     {
-      C.pdebug("FieldType . tok_identifier");
-      if (C.g_parse_mode == C.ParseMode.INCLUDES) {
+      C.c.pdebug("FieldType . tok_identifier");
+      if (C.c.g_parse_mode == Context.ParseMode.INCLUDES) {
         // Ignore identifiers in include mode
         $$ = null;
       } else {
@@ -1057,18 +976,18 @@ FieldType:
     }
 | BaseType
     {
-      C.pdebug("FieldType . BaseType");
+      C.c.pdebug("FieldType . BaseType");
       $$ = $1;
     }
 | ContainerType
     {
-      C.pdebug("FieldType . ContainerType");
+      C.c.pdebug("FieldType . ContainerType");
       $$ = $1;
     }
 
 BaseType: SimpleBaseType TypeAnnotations
     {
-      C.pdebug("BaseType . SimpleBaseType TypeAnnotations");
+      C.c.pdebug("BaseType . SimpleBaseType TypeAnnotations");
       if ($2 != null) {
         $$ = new TBaseType((TBaseType)($1));
         $$.annotations_ = $2.annotations_;
@@ -1081,53 +1000,53 @@ BaseType: SimpleBaseType TypeAnnotations
 SimpleBaseType:
   tok_string
     {
-      C.pdebug("BaseType . tok_string");
-      $$ = g_type_string;
+      C.c.pdebug("BaseType . tok_string");
+      $$ = C.c.g_type_string;
     }
 | tok_binary
     {
-      C.pdebug("BaseType . tok_binary");
-      $$ = g_type_binary;
+      C.c.pdebug("BaseType . tok_binary");
+      $$ = C.c.g_type_binary;
     }
 | tok_slist
     {
-      C.pdebug("BaseType . tok_slist");
-      $$ = g_type_slist;
+      C.c.pdebug("BaseType . tok_slist");
+      $$ = C.c.g_type_slist;
     }
 | tok_bool
     {
-      C.pdebug("BaseType . tok_bool");
-      $$ = g_type_bool;
+      C.c.pdebug("BaseType . tok_bool");
+      $$ = C.c.g_type_bool;
     }
 | tok_byte
     {
-      C.pdebug("BaseType . tok_byte");
-      $$ = g_type_byte;
+      C.c.pdebug("BaseType . tok_byte");
+      $$ = C.c.g_type_byte;
     }
 | tok_i16
     {
-      C.pdebug("BaseType . tok_i16");
-      $$ = g_type_i16;
+      C.c.pdebug("BaseType . tok_i16");
+      $$ = C.c.g_type_i16;
     }
 | tok_i32
     {
-      C.pdebug("BaseType . tok_i32");
-      $$ = g_type_i32;
+      C.c.pdebug("BaseType . tok_i32");
+      $$ = C.c.g_type_i32;
     }
 | tok_i64
     {
-      C.pdebug("BaseType . tok_i64");
-      $$ = g_type_i64;
+      C.c.pdebug("BaseType . tok_i64");
+      $$ = C.c.g_type_i64;
     }
 | tok_double
     {
-      C.pdebug("BaseType . tok_double");
-      $$ = g_type_double;
+      C.c.pdebug("BaseType . tok_double");
+      $$ = C.c.g_type_double;
     }
 
 ContainerType: SimpleContainerType TypeAnnotations
     {
-      C.pdebug("ContainerType . SimpleContainerType TypeAnnotations");
+      C.c.pdebug("ContainerType . SimpleContainerType TypeAnnotations");
       $$ = $1;
       if ($2 != null) {
         $$.annotations.addAll($2.annotations);
@@ -1138,47 +1057,47 @@ ContainerType: SimpleContainerType TypeAnnotations
 SimpleContainerType:
   MapType
     {
-      C.pdebug("SimpleContainerType . MapType");
+      C.c.pdebug("SimpleContainerType . MapType");
       $$ = $1;
     }
 | SetType
     {
-      C.pdebug("SimpleContainerType . SetType");
+      C.c.pdebug("SimpleContainerType . SetType");
       $$ = $1;
     }
 | ListType
     {
-      C.pdebug("SimpleContainerType . ListType");
+      C.c.pdebug("SimpleContainerType . ListType");
       $$ = $1;
     }
 
 MapType:
   tok_map CppType '<' FieldType ',' FieldType '>'
     {
-      C.pdebug("MapType . tok_map <FieldType, FieldType>");
+      C.c.pdebug("MapType . tok_map <FieldType, FieldType>");
       $$ = new TMap($4, $6);
       if ($2 != null) {
-        ((TContainer)$$).setCppName(new String($2));
+        ((TContainer)$$).setCppName($2);
       }
     }
 
 SetType:
   tok_set CppType '<' FieldType '>'
     {
-      C.pdebug("SetType . tok_set<FieldType>");
+      C.c.pdebug("SetType . tok_set<FieldType>");
       $$ = new TSet($4);
       if ($2 != null) {
-        ((TContainer)$$).setCppName(new String($2));
+        ((TContainer)$$).setCppName($2);
       }
     }
 
 ListType:
   tok_list '<' FieldType '>' CppType
     {
-      C.pdebug("ListType . tok_list<FieldType>");
+      C.c.pdebug("ListType . tok_list<FieldType>");
       $$ = new TList($3);
       if ($5 != null) {
-        ((TContainer)$$).setCppName(new String($5));
+        ((TContainer)$$).setCppName($5);
       }
     }
 
@@ -1195,7 +1114,7 @@ CppType:
 TypeAnnotations:
   '(' TypeAnnotationList ')'
     {
-      C.pdebug("TypeAnnotations . ( TypeAnnotationList )");
+      C.c.pdebug("TypeAnnotations . ( TypeAnnotationList )");
       $$ = $2;
     }
 |
@@ -1206,7 +1125,7 @@ TypeAnnotations:
 TypeAnnotationList:
   TypeAnnotationList TypeAnnotation
     {
-      C.pdebug("TypeAnnotationList . TypeAnnotationList , TypeAnnotation");
+      C.c.pdebug("TypeAnnotationList . TypeAnnotationList , TypeAnnotation");
       $$ = $1;
       $$.annotations.put($2.key, $2.val);
       delete $2;
@@ -1214,13 +1133,13 @@ TypeAnnotationList:
 |
     {
       /* Just use a dummy structure to hold the annotations. */
-      $$ = new TStruct(C.g_program);
+      $$ = new TStruct(C.c.g_program);
     }
 
 TypeAnnotation:
   tok_identifier '=' tok_literal CommaOrSemicolonOptional
     {
-      C.pdebug("TypeAnnotation . tok_identifier = tok_literal");
+      C.c.pdebug("TypeAnnotation . tok_identifier = tok_literal");
       $$ = new TAnnotation();
       $$.key = $1;
       $$.val = $3;
