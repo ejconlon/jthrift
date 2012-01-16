@@ -494,7 +494,7 @@ Enum:
           Id const_name = Id.fromString(tenum.getName() + "." + value.getName());
           TConstValue const_val = new TConstValue(value.getValue());
           const_val.setEnum(tenum);
-          C.c.scope.addConstant(const_name, new TConstValue(C.c.typeI32, value.getName(), const_val));
+          C.c.scope.addConstant(const_name, new TConst(C.c.typeI32, value.getName(), const_val));
           if (C.c.parentScope != null) {
             C.c.parentScope.addConstant(Id.fromString(C.c.parentPrefix + const_name),
 	        new TConst(C.c.typeI32, value.getName(), const_val));
@@ -606,7 +606,7 @@ ConstValue:
 | tok_literal
     {
       C.c.pdebug("ConstValue => tok_literal");
-      $$ = new TConstValue($1);
+      $$ = new TConstValue($1.toString());
     }
 | tok_identifier
     {
