@@ -558,7 +558,7 @@ SenumDefList:
 |
     {
       C.c.pdebug("SenumDefList . ");
-      $$ = new TBaseType(Id.fromString("string"), TBaseType.Type.STRING);
+      $$ = new TBaseType(Id.fromString("string"), TType.ConcreteType.STRING);
       ((TBaseType)$$).setStringEnum(true);
     }
 
