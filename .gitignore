@@ -4,3 +4,7 @@
 *.bak
 *.tmp
 *.log
+#*
+.#*
+.idea/*
+*.iml
