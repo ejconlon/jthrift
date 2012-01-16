@@ -1,8 +1,6 @@
 package jthrift;
 
-public class TProgram implements Node {
-    public void setDoc(DText a) {}
-
+public class TProgram extends TDoc {
     public void setNamespace(Id a, Id b) {}
 
     public void addCppInclude(Id a) {}

@@ -2,7 +2,7 @@ package jthrift;
 
 import java.util.List;
 
-public class TEnum {
+public class TEnum extends TType {
     public TEnum(TProgram prog) {}
 
     public Id getName() { return null; }

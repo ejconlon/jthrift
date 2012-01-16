@@ -6,7 +6,7 @@ public class Context {
      * when parsing the members of a struct. Field values are automatically
      * assigned starting from -1 and working their way down.
      */
-    public int y_field_val = -1;
+    public long y_field_val = -1;
     public int g_arglist = 0;
     public final int struct_is_struct = 0;
     public final int struct_is_union = 1;
@@ -54,6 +54,9 @@ public class Context {
     public String g_parent_prefix;
 
     public boolean g_allow_64bit_consts = true;
+    public boolean g_allow_neg_field_keys = false;
+
+    public int g_strict = 127;
 
     public void pdebug(String msg) {
         System.out.println("DEBUG: "+msg);
@@ -63,8 +66,18 @@ public class Context {
         System.out.println("WARN ("+level+"): "+msg);
     }
 
-    public Id include_file(Id path) {
+    public Id includeFile(Id path) {
         return path;
     }
+
+    public void resolveConstValue(TConstValue value, TType type) {
+
+    }
+
+    public void validateConstType(TConst value) {}
+
+    public boolean validateThrows(TStruct struct) { return false; }
+
+    public void validateFieldValue(TField field, TConstValue value) {}
 
 }

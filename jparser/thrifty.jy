@@ -29,6 +29,7 @@
 %code imports {
 package jthrift;
 
+import java.util.Map;
 import java.util.List;
 
 class C {
@@ -136,11 +137,11 @@ class C {
 
 %type<TType>     TypeAnnotations
 %type<TType>     TypeAnnotationList
-%type<TAnnot>    TypeAnnotation
+%type<TAnnotation> TypeAnnotation
 
 %type<TField>    Field
 %type<TFieldId>  FieldIdentifier
-%type<EReq>      FieldRequiredness
+%type<TField.Mods> FieldRequiredness
 %type<TType>     FieldType
 %type<TConstValue>   FieldValue
 %type<TStruct>   FieldList
@@ -150,7 +151,7 @@ class C {
 %type<TEnumValue> EnumDef
 
 %type<TTypedef>  Senum
-%type<TBase>     SenumDefList
+%type<TBaseType> SenumDefList
 %type<Id>        SenumDef
 
 %type<TConst>    Const
@@ -372,8 +373,8 @@ Include:
     {
       C.c.pdebug("Include . tok_include tok_literal");
       if (C.c.g_parse_mode == Context.ParseMode.INCLUDES) {
-        Id path = C.c.include_file($2);
-        if (path.getValue().length() > 0) {
+        Id path = C.c.includeFile($2);
+        if (path.toString().length() > 0) {
           C.c.g_program.addInclude(path, $2);
         }
       }
@@ -407,7 +408,7 @@ Definition:
       if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
         C.c.g_scope.addType($1.getName(), $1);
         if (C.c.g_parent_scope != null) {
-          C.c.g_parent_scope.addType(C.c.g_parent_prefix + $1.getName(), $1);
+          C.c.g_parent_scope.addType(Id.fromString(C.c.g_parent_prefix + $1.getName()), $1);
         }
       }
       $$ = $1;
@@ -418,7 +419,7 @@ Definition:
       if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
         C.c.g_scope.addService($1.getName(), $1);
         if (C.c.g_parent_scope != null) {
-          C.c.g_parent_scope.addService(C.c.g_parent_prefix + $1.getName(), $1);
+          C.c.g_parent_scope.addService(Id.fromString(C.c.g_parent_prefix + $1.getName()), $1);
         }
         C.c.g_program.addService($1);
       }
@@ -490,12 +491,13 @@ Enum:
       if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
         List<TEnumValue> enum_values = tenum.getConstants();
         for (TEnumValue value : enum_values) {
-          String const_name = tenum.getName() + "." + value.getName();
+          Id const_name = Id.fromString(tenum.getName() + "." + value.getName());
           TConstValue const_val = new TConstValue(value.getValue());
           const_val.setEnum(tenum);
           C.c.g_scope.addConstant(const_name, new TConstValue(C.c.g_type_i32, value.getName(), const_val));
           if (C.c.g_parent_scope != null) {
-            C.c.g_parent_scope.addConstant(C.c.g_parent_prefix + const_name, new TConst(C.c.g_type_i32, value.getName(), const_val));
+            C.c.g_parent_scope.addConstant(Id.fromString(C.c.g_parent_prefix + const_name),
+	        new TConst(C.c.g_type_i32, value.getName(), const_val));
           }
         }
       }
@@ -551,13 +553,13 @@ SenumDefList:
     {
       C.c.pdebug("SenumDefList . SenumDefList SenumDef");
       $$ = $1;
-      $$.addStringEnumVal($2);
+      ((TBaseType)$$).addStringEnumVal($2);
     }
 |
     {
       C.c.pdebug("SenumDefList . ");
-      $$ = new TBaseType("string", TBaseType.TYPE_STRING);
-      $$.setStringEnum(true);
+      $$ = new TBaseType(Id.fromString("string"), TBaseType.Type.STRING);
+      ((TBaseType)$$).setStringEnum(true);
     }
 
 SenumDef:
@@ -572,13 +574,13 @@ Const:
     {
       C.c.pdebug("Const . tok_const FieldType tok_identifier = ConstValue");
       if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
-        g_scope.resolve_const_value($5, $2);
+        C.c.g_scope.resolveConstValue($5, $2);
         $$ = new TConst($2, $3, $5);
-        validate_const_type($$);
+        C.c.validateConstType(((TConst)$$));
 
-        g_scope.addConstant($3, $$);
+        C.c.g_scope.addConstant($3, ((TConst)$$));
         if (C.c.g_parent_scope != null) {
-          g_parent_scope.addConstant(C.c.g_parent_prefix + $3, $$);
+          C.c.g_parent_scope.addConstant(Id.fromString(C.c.g_parent_prefix + $3), ((TConst)$$));
         }
       } else {
         $$ = null;
@@ -590,8 +592,8 @@ ConstValue:
     {
       C.c.pdebug("ConstValue => tok_int_constant");
       $$ = new TConstValue();
-      $$.setInteger($1);
-      if (!g_allow_64bit_consts && ($1.getLong() < Integer.MIN_VALUE || $1.getLong() > Integer.MAX_VALUE)) {
+      ((TConstValue)$$).setInteger($1);
+      if (!C.c.g_allow_64bit_consts && ($1.getLong() < Integer.MIN_VALUE || $1.getLong() > Integer.MAX_VALUE)) {
         C.c.pwarning(1, "64-bit constant may not work in all languages.\n"+$1);
       }
     }
@@ -599,7 +601,7 @@ ConstValue:
     {
       C.c.pdebug("ConstValue => tok_dub_constant");
       $$ = new TConstValue();
-      $$.setDouble($1);
+      ((TConstValue)$$).setDouble($1);
     }
 | tok_literal
     {
@@ -610,7 +612,7 @@ ConstValue:
     {
       C.c.pdebug("ConstValue => tok_identifier");
       $$ = new TConstValue();
-      $$.setIdentifier($1);
+      ((TConstValue)$$).setIdentifier($1);
     }
 | ConstList
     {
@@ -635,13 +637,13 @@ ConstListContents:
     {
       C.c.pdebug("ConstListContents => ConstListContents ConstValue CommaOrSemicolonOptional");
       $$ = $1;
-      $$.addList($2);
+      ((TConstValue)$$).addList($2);
     }
 |
     {
       C.c.pdebug("ConstListContents =>");
       $$ = new TConstValue();
-      $$.setList();
+      ((TConstValue)$$).setList();
     }
 
 ConstMap:
@@ -656,13 +658,13 @@ ConstMapContents:
     {
       C.c.pdebug("ConstMapContents => ConstMapContents ConstValue CommaOrSemicolonOptional");
       $$ = $1;
-      $$.addMap($2, $4);
+      ((TConstValue)$$).addMap($2, $4);
     }
 |
     {
       C.c.pdebug("ConstMapContents =>");
       $$ = new TConstValue();
-      $$.seTMap();
+      ((TConstValue)$$).setMap();
     }
 
 StructHead:
@@ -680,11 +682,11 @@ Struct:
     {
       C.c.pdebug("Struct . tok_struct tok_identifier { FieldList }");
       $5.setXsdAll($3);
-      $5.setUnion($1 == C.c.struct_is_union);
+      $5.setUnion(TBool.fromBoolean($1.getLong() == C.c.struct_is_union));
       $$ = $5;
-      $$.setName($2);
+      ((TStruct)$$).setName($2);
       if ($7 != null) {
-        $$.annotations.addAll($7.annotations);
+        ((TStruct)$$).getAnnotations().putAll($7.getAnnotations());
       }
     }
     
@@ -733,7 +735,7 @@ Xception:
     {
       C.c.pdebug("Xception . tok_xception tok_identifier { FieldList }");
       $4.setName($2);
-      $4.setXception(true);
+      $4.setXception(TBool.fromBoolean(true));
       $$ = $4;
     }
 
@@ -742,8 +744,8 @@ Service:
     {
       C.c.pdebug("Service . tok_service tok_identifier { FunctionList }");
       $$ = $6;
-      $$.setName($2);
-      $$.setExtends($3);
+      ((TService)$$).setName($2);
+      ((TService)$$).setExtends($3);
     }
 
 FlagArgs:
@@ -762,10 +764,10 @@ Extends:
       C.c.pdebug("Extends . tok_extends tok_identifier");
       $$ = null;
       if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
-        $$ = g_scope.geTService($2);
+        $$ = C.c.g_scope.getService($2);
         if ($$ == null) {
-          yyerror("Service \"%s\" has not been defined.", $2);
-          exit(1);
+          yyerror("Service "+$2+" has not been defined.");
+          System.exit(1);
         }
       }
     }
@@ -790,10 +792,10 @@ FunctionList:
 Function:
   CaptureDocText Oneway FunctionType tok_identifier '(' FieldList ')' Throws CommaOrSemicolonOptional
     {
-      $6.setName($4 + "_args");
+      $6.setName(Id.fromString($4 + "_args"));
       $$ = new TFunction($3, $4, $6, $8, $2);
       if ($1 != null) {
-        $$.setDoc($1);
+        ((TFunction)$$).setDoc($1);
       }
     }
 
@@ -812,9 +814,9 @@ Throws:
     {
       C.c.pdebug("Throws . tok_throws ( FieldList )");
       $$ = $3;
-      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM && !validate_throws($$)) {
+      if (C.c.g_parse_mode == Context.ParseMode.PROGRAM && !C.c.validateThrows(((TStruct)$$))) {
         yyerror("Throws clause may not contain non-exception types");
-        exit(1);
+        System.exit(1);
       }
     }
 |
@@ -827,9 +829,11 @@ FieldList:
     {
       C.c.pdebug("FieldList . FieldList , Field");
       $$ = $1;
-      if (!($$.append($2))) {
-        yyerror("Field identifier %d for \"%s\" has already been used", $2.getKey(), $2.getName());
-        exit(1);
+      if (!(((TStruct)$$).append($2))) {
+      	Long key = $2.getKey().getLong();
+	String name = $2.getName().toString();
+        yyerror("Field identifier "+key+" for \""+name+"\" has already been used");
+        System.exit(1);
       }
     }
 |
@@ -843,30 +847,30 @@ Field:
   CaptureDocText FieldIdentifier FieldRequiredness FieldType tok_identifier FieldValue XsdOptional XsdNillable XsdAttributes TypeAnnotations CommaOrSemicolonOptional
     {
       C.c.pdebug("tok_int_constant : Field . FieldType tok_identifier");
-      if ($2.auto_assigned) {
+      if ($2.isAutoAssigned()) {
         C.c.pwarning(1, "No field key specified for "+$5+", resulting protocol may have conflicts or not be backwards compatible!\n");
         if (C.c.g_strict >= 192) {
           yyerror("Implicit field keys are deprecated and not allowed with -strict");
-          exit(1);
+          System.exit(1);
         }
       }
-      $$ = new TField($4, $5, $2.value);
-      $$.setReq($3);
+      $$ = new TField($4, $5, $2.getValue());
+      ((TField)$$).setMod($3);
       if ($6 != null) {
-        g_scope.resolveConstValue($6, $4);
-        C.c.validateFieldValue($$, $6);
-        $$.setValue($6);
+        C.c.g_scope.resolveConstValue($6, $4);
+        C.c.validateFieldValue(((TField)$$), $6);
+        ((TField)$$).setValue($6);
       }
-      $$.setXsdOptional($7);
-      $$.setXsdNillable($8);
+      ((TField)$$).setXsdOptional($7);
+      ((TField)$$).setXsdNillable($8);
       if ($1 != null) {
-        $$.setDoc($1);
+        ((TField)$$).setDoc($1);
       }
       if ($9 != null) {
-        $$.setXsdAttrs($9);
+        ((TField)$$).setXsdAttrs($9);
       }
       if ($10 != null) {
-        $$.annotations.addAll($10.annotations);
+        ((TField)$$).getAnnotations().putAll($10.getAnnotations());
       }
     }
 
@@ -880,7 +884,7 @@ FieldIdentifier:
            * specified key values to old .thrift files without breaking
            * protocol compatibility.
            */
-          if ($1 != C.c.y_field_val) {
+          if ($1.getLong() != C.c.y_field_val) {
             /*
              * warn if the user-specified negative value isn't what
              * thrift would have auto-assigned.
@@ -892,44 +896,44 @@ FieldIdentifier:
            * Leave $1 as-is, and update y_field_val to be one less than $1.
            * The FieldList parsing will catch any duplicate key values.
            */
-          C.c.y_field_val = $1 - 1;
-          $$.value = $1;
-          $$.autoAssigned = false;
+          C.c.y_field_val = $1.getLong() - 1;
+          ((IConst)$$).setLong($1.getLong());
+          ((IConst)$$).setIsAutoAssigned(false);
         } else {
           C.c.pwarning(1, "Nonpositive value ("+$1+") not allowed as a field key.\n");
-          $$.value = C.c.y_field_val--;
-          $$.auto_assigned = true;
+          ((IConst)$$).setLong(C.c.y_field_val--);
+          ((IConst)$$).setIsAutoAssigned(true);
         }
       } else {
-        $$.value = $1;
-        $$.auto_assigned = false;
+        ((IConst)$$).setLong($1.getLong());
+        ((IConst)$$).setIsAutoAssigned(false);
       }
     }
 |
     {
-      $$.value = C.c.y_field_val--;
-      $$.auto_assigned = true;
+      ((IConst)$$).setLong(C.c.y_field_val--);
+      ((IConst)$$).setIsAutoAssigned(true);
     }
 
 FieldRequiredness:
   tok_required
     {
-      $$ = TField.T_REQUIRED;
+      $$ = TField.Mods.REQUIRED;
     }
 | tok_optional
     {
-      if (C.c.g_arglist) {
+      if (C.c.g_arglist != 0) {
         if (C.c.g_parse_mode == Context.ParseMode.PROGRAM) {
           C.c.pwarning(1, "optional keyword is ignored in argument lists.\n");
         }
-        $$ = TField.T_OPT_IN_REQ_OUT;
+        $$ = TField.Mods.OPT_IN_REQ_OUT;
       } else {
-        $$ = TField.T_OPTIONAL;
+        $$ = TField.Mods.OPTIONAL;
       }
     }
 |
     {
-      $$ = TField.T_OPT_IN_REQ_OUT;
+      $$ = TField.Mods.OPT_IN_REQ_OUT;
     }
 
 FieldValue:
@@ -967,10 +971,10 @@ FieldType:
         $$ = null;
       } else {
         // Lookup the identifier in the current scope
-        $$ = g_scope.getType($1);
+        $$ = C.c.g_scope.getType($1);
         if ($$ == null) {
-          yyerror("Type \"%s\" has not been defined.", $1);
-          exit(1);
+          yyerror("Type "+$1+" has not been defined.");
+          System.exit(1);
         }
       }
     }
@@ -990,8 +994,7 @@ BaseType: SimpleBaseType TypeAnnotations
       C.c.pdebug("BaseType . SimpleBaseType TypeAnnotations");
       if ($2 != null) {
         $$ = new TBaseType((TBaseType)($1));
-        $$.annotations_ = $2.annotations_;
-        delete $2;
+        ((TBaseType)$$).getAnnotations().putAll($2.getAnnotations());
       } else {
         $$ = $1;
       }
@@ -1049,8 +1052,7 @@ ContainerType: SimpleContainerType TypeAnnotations
       C.c.pdebug("ContainerType . SimpleContainerType TypeAnnotations");
       $$ = $1;
       if ($2 != null) {
-        $$.annotations.addAll($2.annotations);
-        delete $2;
+        ((TContainer)$$).getAnnotations().putAll($2.getAnnotations());
       }
     }
 
@@ -1127,8 +1129,7 @@ TypeAnnotationList:
     {
       C.c.pdebug("TypeAnnotationList . TypeAnnotationList , TypeAnnotation");
       $$ = $1;
-      $$.annotations.put($2.key, $2.val);
-      delete $2;
+      ((TType)$$).getAnnotations().put($2.getKey(), $2.getValue());
     }
 |
     {
@@ -1141,8 +1142,8 @@ TypeAnnotation:
     {
       C.c.pdebug("TypeAnnotation . tok_identifier = tok_literal");
       $$ = new TAnnotation();
-      $$.key = $1;
-      $$.val = $3;
+      ((TAnnotation)$$).setKey($1);
+      ((TAnnotation)$$).setValue($3);
     }
 
 %%
