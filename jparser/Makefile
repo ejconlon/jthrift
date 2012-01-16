@@ -1,7 +1,7 @@
 all: jparse
 
 YYParser.java: thrifty.jy
-	bison --language=java -o $@ $^
+	/opt/local/bin/bison --language=java -o $@ $^
 
 clean:
 	rm YYParser.java *.class
