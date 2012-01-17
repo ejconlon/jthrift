@@ -4,7 +4,7 @@ import java.util.*;
 
 public class TType extends TDoc {
     public static enum ConcreteType {
-	VOID,
+	    VOID,
         STRING,
         BOOL,
         BYTE,
@@ -36,11 +36,11 @@ public class TType extends TDoc {
     private Map<Id, Id> annos = new HashMap<Id, Id>();
 
     public TType() {}
+    public TType(Id name) { setName(name); }
     public TType(TProgram prog) { this.prog = prog; }
     public void setName(Id name) { this.name = name; }
     public Id getName() { return name; }
     public Map<Id, Id> getAnnotations() { return annos; }
     public TProgram getProgram() { return this.prog; }
-    public void setVirtualType(VirtualType vtype) { this.vtype = vtype; }
-    public VirtualType getVirtualType() { return this.vtype; }
+    public VirtualType getVirtualType() { return VirtualType.VOID; }
 }

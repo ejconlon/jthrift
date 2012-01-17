@@ -1,5 +1,12 @@
 package jthrift;
 
 public class TList extends TContainer {
-    public TList(TType elemType) {}
+    private TType elemType;
+
+    public TList(TType elemType) {
+        this.elemType = elemType;
+    }
+
+    @Override
+    public VirtualType getVirtualType() { return VirtualType.LIST; }
 }

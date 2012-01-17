@@ -1,5 +1,12 @@
 package jthrift;
 
 public class TSet extends TContainer {
-    public TSet(TType elemType) {}
+    private TType elemType;
+
+    public TSet(TType elemType) {
+        this.elemType = elemType;
+    }
+
+    @Override
+    public VirtualType getVirtualType() { return VirtualType.SET; }
 }
