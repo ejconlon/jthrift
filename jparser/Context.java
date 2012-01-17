@@ -1,6 +1,11 @@
 package jthrift;
 
 public class Context {
+    
+    private static final Context instance = new Context();
+    private Context() {}
+    public static Context getInstance() { return instance; }
+    
     /**
      * This global variable is used for automatic numbering of field indices etc.
      * when parsing the members of a struct. Field values are automatically
@@ -86,6 +91,22 @@ public class Context {
 
     public void validateFieldValue(TField field, TConstValue value) {
         // TODO
+    }
+
+
+    void thriftReservedKeyword(String keyword) {
+        System.err.println("Cannot use reserved language keyword: \""+keyword+"\"\n");
+        System.exit(1);
+    }
+
+    void integerOverflow(String text) {
+        System.err.println("This integer is too big: \""+text+"\"\n");
+        System.exit(1);
+    }
+
+    void unexpectedToken(String text) {
+        System.err.println("Unexpected token in input: \""+text+"\"\n");
+        System.exit(1);
     }
 
 }
