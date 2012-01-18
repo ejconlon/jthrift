@@ -1,4 +1,4 @@
-package jthrift;
+package jthrift.jparser;
 
 public class TConst extends TDoc {
     private TType type;

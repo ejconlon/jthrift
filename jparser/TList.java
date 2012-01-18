@@ -1,4 +1,4 @@
-package jthrift;
+package jthrift.jparser;
 
 public class TList extends TContainer {
     private TType elemType;

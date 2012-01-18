@@ -1,4 +1,4 @@
-package jthrift;
+package jthrift.jparser;
 
 public class JParse {
     public static void main(String[] args) throws java.io.IOException{

@@ -1,4 +1,4 @@
-package jthrift;
+package jthrift.jparser;
 
 public class LexerShim implements YYParser.Lexer {
 
@@ -24,6 +24,7 @@ public class LexerShim implements YYParser.Lexer {
      * @return the semantic value of the last scanned token.  */
     public Object getLVal () {
 	java_cup.runtime.YYLVal lval = curSym.lval();
+	if (lval == null) return null;
 	if (lval.isL) return lval.l;
 	if (lval.isD) return lval.d;
 	else return lval.s;

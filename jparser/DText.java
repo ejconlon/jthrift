@@ -1,4 +1,4 @@
-package jthrift;
+package jthrift.jparser;
 
 public class DText {
     private String value;

@@ -1,4 +1,4 @@
-package jthrift;
+package jthrift.jparser;
 
 import java.util.LinkedList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package jthrift;
+package jthrift.jparser;
 
 import java.util.HashMap;
 import java.util.LinkedList;

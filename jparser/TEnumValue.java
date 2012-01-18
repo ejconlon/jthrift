@@ -1,4 +1,4 @@
-package jthrift;
+package jthrift.jparser;
 
 public class TEnumValue extends TDoc {
     private Id name;

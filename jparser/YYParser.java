@@ -67,7 +67,7 @@
 /* Line 33 of lalr1.java  */
 /* Line 1 of "thrifty.jy"  */
 
-package jthrift;
+package jthrift.jparser;
 
 import java.util.Map;
 import java.util.List;

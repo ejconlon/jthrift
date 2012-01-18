@@ -1,4 +1,4 @@
-package jthrift;
+package jthrift.jparser;
 
 public class TContainer extends TType {
     private Id cppName;

@@ -1,4 +1,4 @@
-package jthrift;
+package jthrift.jparser;
 
 public class TFunction extends TDoc {
     private TType returnType;

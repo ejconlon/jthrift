@@ -1,4 +1,4 @@
-package jthrift;
+package jthrift.jparser;
 
 // hacked up wrapper for jflex <-> bison
 
