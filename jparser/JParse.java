@@ -17,6 +17,7 @@ public class JParse {
 	    }
 	} else if (op.equals("parse")) {
 	    C.c.program = new TProgram("FAKEPATH", "FAKENAME");
+	    C.c.scope = new TScope();
 	    YYParser.Lexer lexer = LexerShim.fromReader(fileReader);
 	    YYParser parser = new YYParser(lexer);
 	    parser.errorVerbose = true;
