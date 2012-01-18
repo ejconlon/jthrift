@@ -7,11 +7,11 @@ public class Id {
         this.value = value;
     }
 
-    public static Id fromString(String value) {
-        return new Id(value);
+    public String rawString() {
+        return value;
     }
 
     public String toString() {
-        return value;
+        return "Id<"+value+">";
     }
 }

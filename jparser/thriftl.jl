@@ -1,4 +1,4 @@
-package jthrift;
+package jthrift.jparser;
 
 class sym {
     public static final int EOF = YYParser.EOF;
@@ -75,8 +75,8 @@ literal_begin = (['\"])
 {comment}            { /* do nothing */                 }
 {unixcomment}        { /* do nothing */                 }
 
-{symbol}             { K.c.unexpectedToken(yytext());                }
-"*"                  { K.c.unexpectedToken(yytext());                }
+{symbol}             { K.s(yytext().charAt(0));                }
+"*"                  { K.s(yytext().charAt(0));                }
 
 "false"              { return K.s(YYParser.tok_int_constant, new java_cup.runtime.YYLVal(0)); }
 "true"               { return K.s(YYParser.tok_int_constant, new java_cup.runtime.YYLVal(1)); }

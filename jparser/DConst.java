@@ -7,9 +7,9 @@ public class DConst {
         this.ddouble = ddouble;
     }
 
-    public DConst fromDouble(Double ddouble) {
-        return new DConst(ddouble);
-    }
-
     public Double getDouble() { return ddouble; }
+
+    public String toString() {
+	return "DConst<"+ddouble+">";
+    }
 }

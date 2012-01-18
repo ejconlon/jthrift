@@ -2,15 +2,28 @@ package jthrift.jparser;
 
 public class JParse {
     public static void main(String[] args) throws java.io.IOException{
-        if (args.length != 1) {
-            System.err.println("Need filename");
+	if (args.length != 2) {
+            System.err.println("Need op and filename");
             System.exit(-1);
         }
-        String filename = args[0];
+	String op = args[0];
+        String filename = args[1];
 	java.io.FileReader fileReader = new java.io.FileReader(filename);
-	YYParser.Lexer lexer = LexerShim.fromReader(fileReader);
-        YYParser parser = new YYParser(lexer);
-	boolean parsed = parser.parse();
-	System.out.println("PARSED? "+parsed);
+
+	if (op.equals("lex")) {
+	    ScannerIterator scanit = ScannerIterator.fromReader(fileReader);
+	    for (java_cup.runtime.Symbol sym : scanit) {
+		System.out.println("SYMBOL: "+sym);
+	    }
+	} else if (op.equals("parse")) {
+	    YYParser.Lexer lexer = LexerShim.fromReader(fileReader);
+	    YYParser parser = new YYParser(lexer);
+	    parser.errorVerbose = true;
+	    boolean parsed = parser.parse();
+	    System.out.println("PARSED? "+parsed);
+	} else {
+	    System.err.println("Bad op");
+	    System.exit(-1);
+	}
     }
 }

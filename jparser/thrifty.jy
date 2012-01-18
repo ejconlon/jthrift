@@ -1,5 +1,5 @@
 %code imports {
-package jthrift;
+package jthrift.jparser;
 
 import java.util.Map;
 import java.util.List;
@@ -374,7 +374,7 @@ Include:
       C.c.pdebug("Include . tok_include tok_literal");
       if (C.c.parseMode == Context.ParseMode.INCLUDES) {
         Id path = C.c.includeFile($2);
-        if (path.toString().length() > 0) {
+        if (path.rawString().length() > 0) {
           C.c.program.addInclude(path, $2);
         }
       }
@@ -408,7 +408,7 @@ Definition:
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
         C.c.scope.addType($1.getName(), $1);
         if (C.c.parentScope != null) {
-          C.c.parentScope.addType(Id.fromString(C.c.parentPrefix + $1.getName()), $1);
+          C.c.parentScope.addType(new Id(C.c.parentPrefix + $1.getName()), $1);
         }
       }
       $$ = $1;
@@ -419,7 +419,7 @@ Definition:
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
         C.c.scope.addService($1.getName(), $1);
         if (C.c.parentScope != null) {
-          C.c.parentScope.addService(Id.fromString(C.c.parentPrefix + $1.getName()), $1);
+          C.c.parentScope.addService(new Id(C.c.parentPrefix + $1.getName()), $1);
         }
         C.c.program.addService($1);
       }
@@ -491,12 +491,12 @@ Enum:
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
         List<TEnumValue> enum_values = tenum.getConstants();
         for (TEnumValue value : enum_values) {
-          Id const_name = Id.fromString(tenum.getName() + "." + value.getName());
+          Id const_name = new Id(tenum.getName() + "." + value.getName());
           TConstValue const_val = new TConstValue(value.getValue());
           const_val.setEnum(tenum);
           C.c.scope.addConstant(const_name, new TConst(C.c.typeI32, value.getName(), const_val));
           if (C.c.parentScope != null) {
-            C.c.parentScope.addConstant(Id.fromString(C.c.parentPrefix + const_name),
+            C.c.parentScope.addConstant(new Id(C.c.parentPrefix + const_name),
 	        new TConst(C.c.typeI32, value.getName(), const_val));
           }
         }
@@ -558,7 +558,7 @@ SenumDefList:
 |
     {
       C.c.pdebug("SenumDefList . ");
-      $$ = new TBaseType(Id.fromString("string"), TType.ConcreteType.STRING);
+      $$ = new TBaseType(new Id("string"), TType.ConcreteType.STRING);
       ((TBaseType)$$).setStringEnum(true);
     }
 
@@ -580,7 +580,7 @@ Const:
 
         C.c.scope.addConstant($3, ((TConst)$$));
         if (C.c.parentScope != null) {
-          C.c.parentScope.addConstant(Id.fromString(C.c.parentPrefix + $3), ((TConst)$$));
+          C.c.parentScope.addConstant(new Id(C.c.parentPrefix + $3), ((TConst)$$));
         }
       } else {
         $$ = null;
@@ -606,7 +606,7 @@ ConstValue:
 | tok_literal
     {
       C.c.pdebug("ConstValue => tok_literal");
-      $$ = new TConstValue($1.toString());
+      $$ = new TConstValue($1.rawString());
     }
 | tok_identifier
     {
@@ -681,8 +681,8 @@ Struct:
   StructHead tok_identifier XsdAll '{' FieldList '}' TypeAnnotations
     {
       C.c.pdebug("Struct . tok_struct tok_identifier { FieldList }");
-      $5.setXsdAll($3);
-      $5.setUnion(TBool.fromBoolean($1.getLong() == C.c.structIsUnion));
+      $5.setXsdAll($3.toBoolean());
+      $5.setUnion($1.getLong() == C.c.structIsUnion);
       $$ = $5;
       ((TStruct)$$).setName($2);
       if ($7 != null) {
@@ -735,7 +735,7 @@ Xception:
     {
       C.c.pdebug("Xception . tok_xception tok_identifier { FieldList }");
       $4.setName($2);
-      $4.setXception(TBool.fromBoolean(true));
+      $4.setXception(true);
       $$ = $4;
     }
 
@@ -792,7 +792,7 @@ FunctionList:
 Function:
   CaptureDocText Oneway FunctionType tok_identifier '(' FieldList ')' Throws CommaOrSemicolonOptional
     {
-      $6.setName(Id.fromString($4 + "_args"));
+      $6.setName(new Id($4 + "_args"));
       $$ = new TFunction($3, $4, $6, $8, $2);
       if ($1 != null) {
         ((TFunction)$$).setDoc($1);
@@ -831,7 +831,7 @@ FieldList:
       $$ = $1;
       if (!(((TStruct)$$).append($2))) {
       	Long key = $2.getKey().getLong();
-	String name = $2.getName().toString();
+	String name = $2.getName().rawString();
         yyerror("Field identifier "+key+" for \""+name+"\" has already been used");
         System.exit(1);
       }

@@ -733,7 +733,7 @@ class YYParser
       C.c.pdebug("Include . tok_include tok_literal");
       if (C.c.parseMode == Context.ParseMode.INCLUDES) {
         Id path = C.c.includeFile(((Id)(yystack.valueAt (2-(2)))));
-        if (path.toString().length() > 0) {
+        if (path.rawString().length() > 0) {
           C.c.program.addInclude(path, ((Id)(yystack.valueAt (2-(2)))));
         }
       }
@@ -791,7 +791,7 @@ class YYParser
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
         C.c.scope.addType(((TType)(yystack.valueAt (1-(1)))).getName(), ((TType)(yystack.valueAt (1-(1)))));
         if (C.c.parentScope != null) {
-          C.c.parentScope.addType(Id.fromString(C.c.parentPrefix + ((TType)(yystack.valueAt (1-(1)))).getName()), ((TType)(yystack.valueAt (1-(1)))));
+          C.c.parentScope.addType(new Id(C.c.parentPrefix + ((TType)(yystack.valueAt (1-(1)))).getName()), ((TType)(yystack.valueAt (1-(1)))));
         }
       }
       yyval = ((TType)(yystack.valueAt (1-(1))));
@@ -809,7 +809,7 @@ class YYParser
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
         C.c.scope.addService(((TService)(yystack.valueAt (1-(1)))).getName(), ((TService)(yystack.valueAt (1-(1)))));
         if (C.c.parentScope != null) {
-          C.c.parentScope.addService(Id.fromString(C.c.parentPrefix + ((TService)(yystack.valueAt (1-(1)))).getName()), ((TService)(yystack.valueAt (1-(1)))));
+          C.c.parentScope.addService(new Id(C.c.parentPrefix + ((TService)(yystack.valueAt (1-(1)))).getName()), ((TService)(yystack.valueAt (1-(1)))));
         }
         C.c.program.addService(((TService)(yystack.valueAt (1-(1)))));
       }
@@ -943,12 +943,12 @@ class YYParser
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
         List<TEnumValue> enum_values = tenum.getConstants();
         for (TEnumValue value : enum_values) {
-          Id const_name = Id.fromString(tenum.getName() + "." + value.getName());
+          Id const_name = new Id(tenum.getName() + "." + value.getName());
           TConstValue const_val = new TConstValue(value.getValue());
           const_val.setEnum(tenum);
           C.c.scope.addConstant(const_name, new TConst(C.c.typeI32, value.getName(), const_val));
           if (C.c.parentScope != null) {
-            C.c.parentScope.addConstant(Id.fromString(C.c.parentPrefix + const_name),
+            C.c.parentScope.addConstant(new Id(C.c.parentPrefix + const_name),
 	        new TConst(C.c.typeI32, value.getName(), const_val));
           }
         }
@@ -1050,7 +1050,7 @@ class YYParser
 /* Line 559 of "thrifty.jy"  */
     {
       C.c.pdebug("SenumDefList . ");
-      yyval = new TBaseType(Id.fromString("string"), TType.ConcreteType.STRING);
+      yyval = new TBaseType(new Id("string"), TType.ConcreteType.STRING);
       ((TBaseType)yyval).setStringEnum(true);
     };
   break;
@@ -1082,7 +1082,7 @@ class YYParser
 
         C.c.scope.addConstant(((Id)(yystack.valueAt (6-(3)))), ((TConst)yyval));
         if (C.c.parentScope != null) {
-          C.c.parentScope.addConstant(Id.fromString(C.c.parentPrefix + ((Id)(yystack.valueAt (6-(3))))), ((TConst)yyval));
+          C.c.parentScope.addConstant(new Id(C.c.parentPrefix + ((Id)(yystack.valueAt (6-(3))))), ((TConst)yyval));
         }
       } else {
         yyval = null;
@@ -1127,7 +1127,7 @@ class YYParser
 /* Line 607 of "thrifty.jy"  */
     {
       C.c.pdebug("ConstValue => tok_literal");
-      yyval = new TConstValue(((Id)(yystack.valueAt (1-(1)))).toString());
+      yyval = new TConstValue(((Id)(yystack.valueAt (1-(1)))).rawString());
     };
   break;
     
@@ -1274,8 +1274,8 @@ class YYParser
 /* Line 682 of "thrifty.jy"  */
     {
       C.c.pdebug("Struct . tok_struct tok_identifier { FieldList }");
-      ((TStruct)(yystack.valueAt (7-(5)))).setXsdAll(((TBool)(yystack.valueAt (7-(3)))));
-      ((TStruct)(yystack.valueAt (7-(5)))).setUnion(TBool.fromBoolean(((IConst)(yystack.valueAt (7-(1)))).getLong() == C.c.structIsUnion));
+      ((TStruct)(yystack.valueAt (7-(5)))).setXsdAll(((TBool)(yystack.valueAt (7-(3)))).toBoolean());
+      ((TStruct)(yystack.valueAt (7-(5)))).setUnion(((IConst)(yystack.valueAt (7-(1)))).getLong() == C.c.structIsUnion);
       yyval = ((TStruct)(yystack.valueAt (7-(5))));
       ((TStruct)yyval).setName(((Id)(yystack.valueAt (7-(2)))));
       if (((TType)(yystack.valueAt (7-(7)))) != null) {
@@ -1381,7 +1381,7 @@ class YYParser
     {
       C.c.pdebug("Xception . tok_xception tok_identifier { FieldList }");
       ((TStruct)(yystack.valueAt (5-(4)))).setName(((Id)(yystack.valueAt (5-(2)))));
-      ((TStruct)(yystack.valueAt (5-(4)))).setXception(TBool.fromBoolean(true));
+      ((TStruct)(yystack.valueAt (5-(4)))).setXception(true);
       yyval = ((TStruct)(yystack.valueAt (5-(4))));
     };
   break;
@@ -1484,7 +1484,7 @@ class YYParser
 /* Line 353 of lalr1.java  */
 /* Line 794 of "thrifty.jy"  */
     {
-      ((TStruct)(yystack.valueAt (9-(6)))).setName(Id.fromString(((Id)(yystack.valueAt (9-(4)))) + "_args"));
+      ((TStruct)(yystack.valueAt (9-(6)))).setName(new Id(((Id)(yystack.valueAt (9-(4)))) + "_args"));
       yyval = new TFunction(((TType)(yystack.valueAt (9-(3)))), ((Id)(yystack.valueAt (9-(4)))), ((TStruct)(yystack.valueAt (9-(6)))), ((TStruct)(yystack.valueAt (9-(8)))), ((TBool)(yystack.valueAt (9-(2)))));
       if (((DText)(yystack.valueAt (9-(1)))) != null) {
         ((TFunction)yyval).setDoc(((DText)(yystack.valueAt (9-(1)))));
@@ -1552,7 +1552,7 @@ class YYParser
       yyval = ((TStruct)(yystack.valueAt (2-(1))));
       if (!(((TStruct)yyval).append(((TField)(yystack.valueAt (2-(2))))))) {
       	Long key = ((TField)(yystack.valueAt (2-(2)))).getKey().getLong();
-	String name = ((TField)(yystack.valueAt (2-(2)))).getName().toString();
+	String name = ((TField)(yystack.valueAt (2-(2)))).getName().rawString();
         yyerror("Field identifier "+key+" for \""+name+"\" has already been used");
         System.exit(1);
       }

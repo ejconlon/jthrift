@@ -15,5 +15,8 @@ superclean: clean
 jparse: YYParser.java YYLexer.java
 	javac *.java
 
-test: jparse
-	cd ../..; java jthrift.jparser.JParse jthrift/examples/userstorage.thrift	
+testparse: jparse
+	cd ../..; java jthrift.jparser.JParse parse jthrift/examples/userstorage.thrift	
+
+testlex: jparse
+	cd ../..; java jthrift.jparser.JParse lex jthrift/examples/userstorage.thrift	

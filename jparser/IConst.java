@@ -9,10 +9,6 @@ public class IConst {
         this.aa = false;
     }
 
-    public IConst fromLong(Long llong) {
-        return new IConst(llong);
-    }
-
     public Long getLong() { return llong; }
 
     public void setLong(Long llong) {
@@ -21,5 +17,9 @@ public class IConst {
 
     public void setIsAutoAssigned(boolean aa) {
         this.aa = aa;
+    }
+
+    public String toString() {
+	return "IConst<"+llong+">";
     }
 }

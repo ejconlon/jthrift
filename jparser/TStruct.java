@@ -4,19 +4,19 @@ import java.util.List;
 
 public class TStruct extends TType {
     private List<TField> fields;
-    private TBool xsdAll;
-    private TBool union;
-    private TBool xception;
+    private boolean xsdAll;
+    private boolean union;
+    private boolean xception;
     private TService parent;
 
     public TStruct(TProgram prog) { super(prog); }
-    public void setXsdAll(TBool xsdAll) {
+    public void setXsdAll(boolean xsdAll) {
         this.xsdAll = xsdAll;
     }
-    public void setUnion(TBool union) {
+    public void setUnion(boolean union) {
         this.union = union;
     }
-    public void setXception(TBool xception) {
+    public void setXception(boolean xception) {
         this.xception = xception;
     }
     public void setExtends(TService parent) {

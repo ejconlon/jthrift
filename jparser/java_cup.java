@@ -5,25 +5,25 @@ package jthrift.jparser;
 public class java_cup {
     public static class runtime {
         public static class YYLVal {
-	    public long l;
-            public double d;
-            public String s;
-	    public boolean isL = false;
-	    public boolean isD = false;
-	    public boolean isS = false;
+	    public Object val;
 
 	    public YYLVal(long l) {
-	        this.l = l;
-		this.isL = true;
+		this.val = new IConst(l);
 	    }		
 	    public YYLVal(double d) {
-	        this.d = d;
-		this.isD = true;
+		this.val = new DConst(d);
 	    }		
 	    public YYLVal(String s) {
-	        this.s = s;
-		this.isS = true;
+		this.val = new Id(s);
 	    }		
+
+	    public Object getValue() {
+		return val;
+	    }
+
+	    public String toString() {
+		return "YYLVal<"+val.toString()+">";
+	    }
 
         }
 
@@ -39,6 +39,11 @@ public class java_cup {
             }
   	    public int sym_num() { return dex; }
 	    public YYLVal lval() { return lv; }
+	    public String toString() {
+		String name = TokLookup.lookup(dex);
+		if (name == null) name = "LIT<"+(char)dex+">";
+		return "Symbol<"+name+","+lv+">";
+	    }
         }
 
 	public static interface Scanner {
