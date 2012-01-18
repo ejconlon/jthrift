@@ -1,3 +1,15 @@
+%code imports {
+package jthrift;
+
+import java.util.Map;
+import java.util.List;
+
+class C {
+      static Context c = Context.getInstance();
+}
+
+}
+
 %{
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -25,18 +37,6 @@
  *
  */
 %}
-
-%code imports {
-package jthrift;
-
-import java.util.Map;
-import java.util.List;
-
-class C {
-      static Context c = Context.getInstance();
-}
-
-}
 
 /**
  * Strings identifier

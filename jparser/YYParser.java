@@ -34,7 +34,7 @@
 /* First part of user declarations.  */
 
 /* Line 32 of lalr1.java  */
-/* Line 1 of "thrifty.jy"  */
+/* Line 13 of "thrifty.jy"  */
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -65,7 +65,7 @@
 /* "%code imports" blocks.  */
 
 /* Line 33 of lalr1.java  */
-/* Line 29 of "thrifty.jy"  */
+/* Line 1 of "thrifty.jy"  */
 
 package jthrift;
 

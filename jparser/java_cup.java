@@ -42,7 +42,7 @@ public class java_cup {
         }
 
 	public static interface Scanner {
-	    Symbol next_token() throws Exception;
+	    Symbol next_token() throws java.io.IOException;
         }
     }
 }
