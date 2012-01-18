@@ -140,7 +140,7 @@ class C {
 %type<TAnnotation> TypeAnnotation
 
 %type<TField>    Field
-%type<TFieldId>  FieldIdentifier
+%type<IConst>  FieldIdentifier
 %type<TField.Mods> FieldRequiredness
 %type<TType>     FieldType
 %type<TConstValue>   FieldValue
@@ -670,19 +670,19 @@ ConstMapContents:
 StructHead:
   tok_struct
     {
-      $$ = C.c.structIsStruct;
+      $$ = new IConst(C.c.structIsStruct);
     }
 | tok_union
     {
-      $$ = C.c.structIsUnion;
+      $$ = new IConst(C.c.structIsUnion);
     }
 
 Struct:
   StructHead tok_identifier XsdAll '{' FieldList '}' TypeAnnotations
     {
       C.c.pdebug("Struct . tok_struct tok_identifier { FieldList }");
-      $5.setXsdAll($3.toBoolean());
-      $5.setUnion($1.getLong() == C.c.structIsUnion);
+      $5.setXsdAll($3);
+      $5.setUnion(new TBool($1.getLong().equals(C.c.structIsUnion)));
       $$ = $5;
       ((TStruct)$$).setName($2);
       if ($7 != null) {
@@ -693,31 +693,31 @@ Struct:
 XsdAll:
   tok_xsd_all
     {
-      $$ = true;
+      $$ = new TBool(true);
     }
 |
     {
-      $$ = false;
+      $$ = new TBool(false);
     }
 
 XsdOptional:
   tok_xsd_optional
     {
-      $$ = true;
+      $$ = new TBool(true);
     }
 |
     {
-      $$ = false;
+      $$ = new TBool(false);
     }
 
 XsdNillable:
   tok_xsd_nillable
     {
-      $$ = true;
+      $$ = new TBool(true);
     }
 |
     {
-      $$ = false;
+      $$ = new TBool(false);
     }
 
 XsdAttributes:
@@ -735,7 +735,7 @@ Xception:
     {
       C.c.pdebug("Xception . tok_xception tok_identifier { FieldList }");
       $4.setName($2);
-      $4.setXception(true);
+      $4.setXception(new TBool(true));
       $$ = $4;
     }
 
@@ -802,11 +802,11 @@ Function:
 Oneway:
   tok_oneway
     {
-      $$ = true;
+      $$ = new TBool(true);
     }
 |
     {
-      $$ = false;
+      $$ = new TBool(false);
     }
 
 Throws:
@@ -854,7 +854,7 @@ Field:
           System.exit(1);
         }
       }
-      $$ = new TField($4, $5, $2.getValue());
+      $$ = new TField($4, $5, $2);
       ((TField)$$).setMod($3);
       if ($6 != null) {
         C.c.scope.resolveConstValue($6, $4);

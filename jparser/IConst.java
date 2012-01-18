@@ -4,7 +4,7 @@ public class IConst {
     private Long llong;
     private boolean aa;
 
-    public IConst(Long llong) {
+    public IConst(long llong) {
         this.llong = llong;
         this.aa = false;
     }
@@ -17,6 +17,10 @@ public class IConst {
 
     public void setIsAutoAssigned(boolean aa) {
         this.aa = aa;
+    }
+
+    public boolean isAutoAssigned() {
+	return aa;
     }
 
     public String toString() {

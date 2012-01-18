@@ -1,22 +1,22 @@
 package jthrift.jparser;
 
-import java.util.List;
+import java.util.*;
 
 public class TStruct extends TType {
-    private List<TField> fields;
-    private boolean xsdAll;
-    private boolean union;
-    private boolean xception;
+    private List<TField> fields = new LinkedList<TField>();
+    private TBool xsdAll;
+    private TBool union;
+    private TBool xception;
     private TService parent;
 
     public TStruct(TProgram prog) { super(prog); }
-    public void setXsdAll(boolean xsdAll) {
+    public void setXsdAll(TBool xsdAll) {
         this.xsdAll = xsdAll;
     }
-    public void setUnion(boolean union) {
+    public void setUnion(TBool union) {
         this.union = union;
     }
-    public void setXception(boolean xception) {
+    public void setXception(TBool xception) {
         this.xception = xception;
     }
     public void setExtends(TService parent) {

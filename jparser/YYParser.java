@@ -1251,7 +1251,7 @@ class YYParser
 /* Line 353 of lalr1.java  */
 /* Line 672 of "thrifty.jy"  */
     {
-      yyval = C.c.structIsStruct;
+      yyval = new IConst(C.c.structIsStruct);
     };
   break;
     
@@ -1262,7 +1262,7 @@ class YYParser
 /* Line 353 of lalr1.java  */
 /* Line 676 of "thrifty.jy"  */
     {
-      yyval = C.c.structIsUnion;
+      yyval = new IConst(C.c.structIsUnion);
     };
   break;
     
@@ -1274,8 +1274,8 @@ class YYParser
 /* Line 682 of "thrifty.jy"  */
     {
       C.c.pdebug("Struct . tok_struct tok_identifier { FieldList }");
-      ((TStruct)(yystack.valueAt (7-(5)))).setXsdAll(((TBool)(yystack.valueAt (7-(3)))).toBoolean());
-      ((TStruct)(yystack.valueAt (7-(5)))).setUnion(((IConst)(yystack.valueAt (7-(1)))).getLong() == C.c.structIsUnion);
+      ((TStruct)(yystack.valueAt (7-(5)))).setXsdAll(((TBool)(yystack.valueAt (7-(3)))));
+      ((TStruct)(yystack.valueAt (7-(5)))).setUnion(new TBool(((IConst)(yystack.valueAt (7-(1)))).getLong().equals(C.c.structIsUnion)));
       yyval = ((TStruct)(yystack.valueAt (7-(5))));
       ((TStruct)yyval).setName(((Id)(yystack.valueAt (7-(2)))));
       if (((TType)(yystack.valueAt (7-(7)))) != null) {
@@ -1291,7 +1291,7 @@ class YYParser
 /* Line 353 of lalr1.java  */
 /* Line 695 of "thrifty.jy"  */
     {
-      yyval = true;
+      yyval = new TBool(true);
     };
   break;
     
@@ -1302,7 +1302,7 @@ class YYParser
 /* Line 353 of lalr1.java  */
 /* Line 699 of "thrifty.jy"  */
     {
-      yyval = false;
+      yyval = new TBool(false);
     };
   break;
     
@@ -1313,7 +1313,7 @@ class YYParser
 /* Line 353 of lalr1.java  */
 /* Line 705 of "thrifty.jy"  */
     {
-      yyval = true;
+      yyval = new TBool(true);
     };
   break;
     
@@ -1324,7 +1324,7 @@ class YYParser
 /* Line 353 of lalr1.java  */
 /* Line 709 of "thrifty.jy"  */
     {
-      yyval = false;
+      yyval = new TBool(false);
     };
   break;
     
@@ -1335,7 +1335,7 @@ class YYParser
 /* Line 353 of lalr1.java  */
 /* Line 715 of "thrifty.jy"  */
     {
-      yyval = true;
+      yyval = new TBool(true);
     };
   break;
     
@@ -1346,7 +1346,7 @@ class YYParser
 /* Line 353 of lalr1.java  */
 /* Line 719 of "thrifty.jy"  */
     {
-      yyval = false;
+      yyval = new TBool(false);
     };
   break;
     
@@ -1381,7 +1381,7 @@ class YYParser
     {
       C.c.pdebug("Xception . tok_xception tok_identifier { FieldList }");
       ((TStruct)(yystack.valueAt (5-(4)))).setName(((Id)(yystack.valueAt (5-(2)))));
-      ((TStruct)(yystack.valueAt (5-(4)))).setXception(true);
+      ((TStruct)(yystack.valueAt (5-(4)))).setXception(new TBool(true));
       yyval = ((TStruct)(yystack.valueAt (5-(4))));
     };
   break;
@@ -1499,7 +1499,7 @@ class YYParser
 /* Line 353 of lalr1.java  */
 /* Line 804 of "thrifty.jy"  */
     {
-      yyval = true;
+      yyval = new TBool(true);
     };
   break;
     
@@ -1510,7 +1510,7 @@ class YYParser
 /* Line 353 of lalr1.java  */
 /* Line 808 of "thrifty.jy"  */
     {
-      yyval = false;
+      yyval = new TBool(false);
     };
   break;
     
@@ -1580,14 +1580,14 @@ class YYParser
 /* Line 848 of "thrifty.jy"  */
     {
       C.c.pdebug("tok_int_constant : Field . FieldType tok_identifier");
-      if (((TFieldId)(yystack.valueAt (11-(2)))).isAutoAssigned()) {
+      if (((IConst)(yystack.valueAt (11-(2)))).isAutoAssigned()) {
         C.c.pwarning(1, "No field key specified for "+((Id)(yystack.valueAt (11-(5))))+", resulting protocol may have conflicts or not be backwards compatible!\n");
         if (C.c.strict >= 192) {
           yyerror("Implicit field keys are deprecated and not allowed with -strict");
           System.exit(1);
         }
       }
-      yyval = new TField(((TType)(yystack.valueAt (11-(4)))), ((Id)(yystack.valueAt (11-(5)))), ((TFieldId)(yystack.valueAt (11-(2)))).getValue());
+      yyval = new TField(((TType)(yystack.valueAt (11-(4)))), ((Id)(yystack.valueAt (11-(5)))), ((IConst)(yystack.valueAt (11-(2)))));
       ((TField)yyval).setMod(((TField.Mods)(yystack.valueAt (11-(3)))));
       if (((TConstValue)(yystack.valueAt (11-(6)))) != null) {
         C.c.scope.resolveConstValue(((TConstValue)(yystack.valueAt (11-(6)))), ((TType)(yystack.valueAt (11-(4)))));

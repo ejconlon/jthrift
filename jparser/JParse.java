@@ -16,6 +16,7 @@ public class JParse {
 		System.out.println("SYMBOL: "+sym);
 	    }
 	} else if (op.equals("parse")) {
+	    C.c.program = new TProgram("FAKEPATH", "FAKENAME");
 	    YYParser.Lexer lexer = LexerShim.fromReader(fileReader);
 	    YYParser parser = new YYParser(lexer);
 	    parser.errorVerbose = true;

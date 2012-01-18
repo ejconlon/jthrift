@@ -31,8 +31,8 @@ public class TField extends TDoc {
     public void setMod(Mods mod) {
         this.mod = mod;
     }
-    public Id getName() { return null; }
-    public IConst getKey() { return null; }
+    public Id getName() { return name; }
+    public IConst getKey() { return key; }
     public void setValue(TConstValue value) {
         this.value = value;
     }

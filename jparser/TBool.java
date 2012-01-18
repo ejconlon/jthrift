@@ -8,10 +8,6 @@ public class TBool {
 	this.value = value;
     }
 
-    public static TBool fromBoolean(boolean value) {
-	return new TBool(value);
-    }
-
     public boolean toBoolean() {
 	return value;
     }
