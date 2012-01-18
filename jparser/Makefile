@@ -3,8 +3,14 @@ all: jparse
 YYParser.java: thrifty.jy
 	bison --language=java -o $@ $^
 
-clean:
-	rm YYParser.java YYLexer.java *.class
+YYLexer.java: YYParser.java thriftl.jl
+	jflex thriftl.jl
 
-jparse: YYParser.java
+clean:
+	rm *.class
+
+superclean: clean
+	rm YYParser.java YYLexer.java
+
+jparse: YYParser.java YYLexer.java
 	javac *.java

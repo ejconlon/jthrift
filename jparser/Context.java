@@ -21,7 +21,7 @@ public class Context {
     };
     public ParseMode parseMode = ParseMode.PROGRAM;
 
-    public int doctestLineno;
+    public int doctextLineno;
     public String doctext;
 
     public void clear_doctext() {

@@ -1,20 +1,17 @@
 package jthrift;
 
-class java_cup {
-    static class runtime {
-        static class Symbol {
-            private final int dex;
-            public Symbol(int dex) {
-                this.dex = dex;
-            }
-        }
-    }
+class sym {
+    public static final int EOF = YYParser.EOF;
 }
 
 class K {
       static Context c = Context.getInstance();
       static java_cup.runtime.Symbol s(int dex) {
         return new java_cup.runtime.Symbol(dex);
+      }
+      static java_cup.runtime.Symbol s(int dex,
+          java_cup.runtime.YYLVal lv) {
+        return new java_cup.runtime.Symbol(dex, lv);
       }
 }
 
@@ -56,21 +53,6 @@ class K {
 %line
 %column
 
-/**
- * Provides the yylineno global, useful for debugging output
- */
-//%option lex-compat
-
-/**
- * Our inputs are all single files, so no need for yywrap
- */
-//%option noyywrap
-
-/**
- * We don't use it, and it fires up warnings at -Wall
- */
-//%option nounput
-
 intconstant   = ([+-]?[0-9]+)
 hexconstant   = ("0x"[0-9A-Fa-f]+)
 dubconstant   = ([+-]?[0-9]*(\.[0-9]+)?([eE][+-]?[0-9]+)?)
@@ -93,13 +75,13 @@ literal_begin = (['\"])
 {comment}            { /* do nothing */                 }
 {unixcomment}        { /* do nothing */                 }
 
-{symbol}             { return yytext[0];                }
-"*"                  { return yytext[0];                }
+{symbol}             { K.c.unexpectedToken(yytext());                }
+"*"                  { K.c.unexpectedToken(yytext());                }
 
-"false"              { yylval.iconst=0; return K.s(YYParser.tok_int_constant); }
-"true"               { yylval.iconst=1; return K.s(YYParser.tok_int_constant); }
+"false"              { return K.s(YYParser.tok_int_constant, new java_cup.runtime.YYLVal(0)); }
+"true"               { return K.s(YYParser.tok_int_constant, new java_cup.runtime.YYLVal(1)); }
 
-"namespace"          { return K.s(YYParser.tok_namespace;)            }
+"namespace"          { return K.s(YYParser.tok_namespace);            }
 "cpp_namespace"      { return K.s(YYParser.tok_cpp_namespace);        }
 "cpp_include"        { return K.s(YYParser.tok_cpp_include);          }
 "cpp_type"           { return K.s(YYParser.tok_cpp_type);             }
@@ -151,150 +133,147 @@ literal_begin = (['\"])
 }
 
 
-"BEGIN"              { K.c.thriftReservedKeyword(yytext); }
-"END"                { K.c.thriftReservedKeyword(yytext); }
-"__CLASS__"          { K.c.thriftReservedKeyword(yytext); }
-"__DIR__"            { K.c.thriftReservedKeyword(yytext); }
-"__FILE__"           { K.c.thriftReservedKeyword(yytext); }
-"__FUNCTION__"       { K.c.thriftReservedKeyword(yytext); }
-"__LINE__"           { K.c.thriftReservedKeyword(yytext); }
-"__METHOD__"         { K.c.thriftReservedKeyword(yytext); }
-"__NAMESPACE__"      { K.c.thriftReservedKeyword(yytext); }
-"abstract"           { K.c.thriftReservedKeyword(yytext); }
-"alias"              { K.c.thriftReservedKeyword(yytext); }
-"and"                { K.c.thriftReservedKeyword(yytext); }
-"args"               { K.c.thriftReservedKeyword(yytext); }
-"as"                 { K.c.thriftReservedKeyword(yytext); }
-"assert"             { K.c.thriftReservedKeyword(yytext); }
-"begin"              { K.c.thriftReservedKeyword(yytext); }
-"break"              { K.c.thriftReservedKeyword(yytext); }
-"case"               { K.c.thriftReservedKeyword(yytext); }
-"catch"              { K.c.thriftReservedKeyword(yytext); }
-"class"              { K.c.thriftReservedKeyword(yytext); }
-"clone"              { K.c.thriftReservedKeyword(yytext); }
-"continue"           { K.c.thriftReservedKeyword(yytext); }
-"declare"            { K.c.thriftReservedKeyword(yytext); }
-"def"                { K.c.thriftReservedKeyword(yytext); }
-"default"            { K.c.thriftReservedKeyword(yytext); }
-"del"                { K.c.thriftReservedKeyword(yytext); }
-"delete"             { K.c.thriftReservedKeyword(yytext); }
-"do"                 { K.c.thriftReservedKeyword(yytext); }
-"dynamic"            { K.c.thriftReservedKeyword(yytext); }
-"elif"               { K.c.thriftReservedKeyword(yytext); }
-"else"               { K.c.thriftReservedKeyword(yytext); }
-"elseif"             { K.c.thriftReservedKeyword(yytext); }
-"elsif"              { K.c.thriftReservedKeyword(yytext); }
-"end"                { K.c.thriftReservedKeyword(yytext); }
-"enddeclare"         { K.c.thriftReservedKeyword(yytext); }
-"endfor"             { K.c.thriftReservedKeyword(yytext); }
-"endforeach"         { K.c.thriftReservedKeyword(yytext); }
-"endif"              { K.c.thriftReservedKeyword(yytext); }
-"endswitch"          { K.c.thriftReservedKeyword(yytext); }
-"endwhile"           { K.c.thriftReservedKeyword(yytext); }
-"ensure"             { K.c.thriftReservedKeyword(yytext); }
-"except"             { K.c.thriftReservedKeyword(yytext); }
-"exec"               { K.c.thriftReservedKeyword(yytext); }
-"finally"            { K.c.thriftReservedKeyword(yytext); }
-"float"              { K.c.thriftReservedKeyword(yytext); }
-"for"                { K.c.thriftReservedKeyword(yytext); }
-"foreach"            { K.c.thriftReservedKeyword(yytext); }
-"function"           { K.c.thriftReservedKeyword(yytext); }
-"global"             { K.c.thriftReservedKeyword(yytext); }
-"goto"               { K.c.thriftReservedKeyword(yytext); }
-"if"                 { K.c.thriftReservedKeyword(yytext); }
-"implements"         { K.c.thriftReservedKeyword(yytext); }
-"import"             { K.c.thriftReservedKeyword(yytext); }
-"in"                 { K.c.thriftReservedKeyword(yytext); }
-"inline"             { K.c.thriftReservedKeyword(yytext); }
-"instanceof"         { K.c.thriftReservedKeyword(yytext); }
-"interface"          { K.c.thriftReservedKeyword(yytext); }
-"is"                 { K.c.thriftReservedKeyword(yytext); }
-"lambda"             { K.c.thriftReservedKeyword(yytext); }
-"module"             { K.c.thriftReservedKeyword(yytext); }
-"native"             { K.c.thriftReservedKeyword(yytext); }
-"new"                { K.c.thriftReservedKeyword(yytext); }
-"next"               { K.c.thriftReservedKeyword(yytext); }
-"nil"                { K.c.thriftReservedKeyword(yytext); }
-"not"                { K.c.thriftReservedKeyword(yytext); }
-"or"                 { K.c.thriftReservedKeyword(yytext); }
-"pass"               { K.c.thriftReservedKeyword(yytext); }
-"public"             { K.c.thriftReservedKeyword(yytext); }
-"print"              { K.c.thriftReservedKeyword(yytext); }
-"private"            { K.c.thriftReservedKeyword(yytext); }
-"protected"          { K.c.thriftReservedKeyword(yytext); }
-"public"             { K.c.thriftReservedKeyword(yytext); }
-"raise"              { K.c.thriftReservedKeyword(yytext); }
-"redo"               { K.c.thriftReservedKeyword(yytext); }
-"rescue"             { K.c.thriftReservedKeyword(yytext); }
-"retry"              { K.c.thriftReservedKeyword(yytext); }
-"register"           { K.c.thriftReservedKeyword(yytext); }
-"return"             { K.c.thriftReservedKeyword(yytext); }
-"self"               { K.c.thriftReservedKeyword(yytext); }
-"sizeof"             { K.c.thriftReservedKeyword(yytext); }
-"static"             { K.c.thriftReservedKeyword(yytext); }
-"super"              { K.c.thriftReservedKeyword(yytext); }
-"switch"             { K.c.thriftReservedKeyword(yytext); }
-"synchronized"       { K.c.thriftReservedKeyword(yytext); }
-"then"               { K.c.thriftReservedKeyword(yytext); }
-"this"               { K.c.thriftReservedKeyword(yytext); }
-"throw"              { K.c.thriftReservedKeyword(yytext); }
-"transient"          { K.c.thriftReservedKeyword(yytext); }
-"try"                { K.c.thriftReservedKeyword(yytext); }
-"undef"              { K.c.thriftReservedKeyword(yytext); }
-"union"              { K.c.thriftReservedKeyword(yytext); }
-"unless"             { K.c.thriftReservedKeyword(yytext); }
-"unsigned"           { K.c.thriftReservedKeyword(yytext); }
-"until"              { K.c.thriftReservedKeyword(yytext); }
-"use"                { K.c.thriftReservedKeyword(yytext); }
-"var"                { K.c.thriftReservedKeyword(yytext); }
-"virtual"            { K.c.thriftReservedKeyword(yytext); }
-"volatile"           { K.c.thriftReservedKeyword(yytext); }
-"when"               { K.c.thriftReservedKeyword(yytext); }
-"while"              { K.c.thriftReservedKeyword(yytext); }
-"with"               { K.c.thriftReservedKeyword(yytext); }
-"xor"                { K.c.thriftReservedKeyword(yytext); }
-"yield"              { K.c.thriftReservedKeyword(yytext); }
+"BEGIN"              { K.c.thriftReservedKeyword(yytext()); }
+"END"                { K.c.thriftReservedKeyword(yytext()); }
+"__CLASS__"          { K.c.thriftReservedKeyword(yytext()); }
+"__DIR__"            { K.c.thriftReservedKeyword(yytext()); }
+"__FILE__"           { K.c.thriftReservedKeyword(yytext()); }
+"__FUNCTION__"       { K.c.thriftReservedKeyword(yytext()); }
+"__LINE__"           { K.c.thriftReservedKeyword(yytext()); }
+"__METHOD__"         { K.c.thriftReservedKeyword(yytext()); }
+"__NAMESPACE__"      { K.c.thriftReservedKeyword(yytext()); }
+"abstract"           { K.c.thriftReservedKeyword(yytext()); }
+"alias"              { K.c.thriftReservedKeyword(yytext()); }
+"and"                { K.c.thriftReservedKeyword(yytext()); }
+"args"               { K.c.thriftReservedKeyword(yytext()); }
+"as"                 { K.c.thriftReservedKeyword(yytext()); }
+"assert"             { K.c.thriftReservedKeyword(yytext()); }
+"begin"              { K.c.thriftReservedKeyword(yytext()); }
+"break"              { K.c.thriftReservedKeyword(yytext()); }
+"case"               { K.c.thriftReservedKeyword(yytext()); }
+"catch"              { K.c.thriftReservedKeyword(yytext()); }
+"class"              { K.c.thriftReservedKeyword(yytext()); }
+"clone"              { K.c.thriftReservedKeyword(yytext()); }
+"continue"           { K.c.thriftReservedKeyword(yytext()); }
+"declare"            { K.c.thriftReservedKeyword(yytext()); }
+"def"                { K.c.thriftReservedKeyword(yytext()); }
+"default"            { K.c.thriftReservedKeyword(yytext()); }
+"del"                { K.c.thriftReservedKeyword(yytext()); }
+"delete"             { K.c.thriftReservedKeyword(yytext()); }
+"do"                 { K.c.thriftReservedKeyword(yytext()); }
+"dynamic"            { K.c.thriftReservedKeyword(yytext()); }
+"elif"               { K.c.thriftReservedKeyword(yytext()); }
+"else"               { K.c.thriftReservedKeyword(yytext()); }
+"elseif"             { K.c.thriftReservedKeyword(yytext()); }
+"elsif"              { K.c.thriftReservedKeyword(yytext()); }
+"end"                { K.c.thriftReservedKeyword(yytext()); }
+"enddeclare"         { K.c.thriftReservedKeyword(yytext()); }
+"endfor"             { K.c.thriftReservedKeyword(yytext()); }
+"endforeach"         { K.c.thriftReservedKeyword(yytext()); }
+"endif"              { K.c.thriftReservedKeyword(yytext()); }
+"endswitch"          { K.c.thriftReservedKeyword(yytext()); }
+"endwhile"           { K.c.thriftReservedKeyword(yytext()); }
+"ensure"             { K.c.thriftReservedKeyword(yytext()); }
+"except"             { K.c.thriftReservedKeyword(yytext()); }
+"exec"               { K.c.thriftReservedKeyword(yytext()); }
+"finally"            { K.c.thriftReservedKeyword(yytext()); }
+"float"              { K.c.thriftReservedKeyword(yytext()); }
+"for"                { K.c.thriftReservedKeyword(yytext()); }
+"foreach"            { K.c.thriftReservedKeyword(yytext()); }
+"function"           { K.c.thriftReservedKeyword(yytext()); }
+"global"             { K.c.thriftReservedKeyword(yytext()); }
+"goto"               { K.c.thriftReservedKeyword(yytext()); }
+"if"                 { K.c.thriftReservedKeyword(yytext()); }
+"implements"         { K.c.thriftReservedKeyword(yytext()); }
+"import"             { K.c.thriftReservedKeyword(yytext()); }
+"in"                 { K.c.thriftReservedKeyword(yytext()); }
+"inline"             { K.c.thriftReservedKeyword(yytext()); }
+"instanceof"         { K.c.thriftReservedKeyword(yytext()); }
+"interface"          { K.c.thriftReservedKeyword(yytext()); }
+"is"                 { K.c.thriftReservedKeyword(yytext()); }
+"lambda"             { K.c.thriftReservedKeyword(yytext()); }
+"module"             { K.c.thriftReservedKeyword(yytext()); }
+"native"             { K.c.thriftReservedKeyword(yytext()); }
+"new"                { K.c.thriftReservedKeyword(yytext()); }
+"next"               { K.c.thriftReservedKeyword(yytext()); }
+"nil"                { K.c.thriftReservedKeyword(yytext()); }
+"not"                { K.c.thriftReservedKeyword(yytext()); }
+"or"                 { K.c.thriftReservedKeyword(yytext()); }
+"pass"               { K.c.thriftReservedKeyword(yytext()); }
+"public"             { K.c.thriftReservedKeyword(yytext()); }
+"print"              { K.c.thriftReservedKeyword(yytext()); }
+"private"            { K.c.thriftReservedKeyword(yytext()); }
+"protected"          { K.c.thriftReservedKeyword(yytext()); }
+"public"             { K.c.thriftReservedKeyword(yytext()); }
+"raise"              { K.c.thriftReservedKeyword(yytext()); }
+"redo"               { K.c.thriftReservedKeyword(yytext()); }
+"rescue"             { K.c.thriftReservedKeyword(yytext()); }
+"retry"              { K.c.thriftReservedKeyword(yytext()); }
+"register"           { K.c.thriftReservedKeyword(yytext()); }
+"return"             { K.c.thriftReservedKeyword(yytext()); }
+"self"               { K.c.thriftReservedKeyword(yytext()); }
+"sizeof"             { K.c.thriftReservedKeyword(yytext()); }
+"static"             { K.c.thriftReservedKeyword(yytext()); }
+"super"              { K.c.thriftReservedKeyword(yytext()); }
+"switch"             { K.c.thriftReservedKeyword(yytext()); }
+"synchronized"       { K.c.thriftReservedKeyword(yytext()); }
+"then"               { K.c.thriftReservedKeyword(yytext()); }
+"this"               { K.c.thriftReservedKeyword(yytext()); }
+"throw"              { K.c.thriftReservedKeyword(yytext()); }
+"transient"          { K.c.thriftReservedKeyword(yytext()); }
+"try"                { K.c.thriftReservedKeyword(yytext()); }
+"undef"              { K.c.thriftReservedKeyword(yytext()); }
+"union"              { K.c.thriftReservedKeyword(yytext()); }
+"unless"             { K.c.thriftReservedKeyword(yytext()); }
+"unsigned"           { K.c.thriftReservedKeyword(yytext()); }
+"until"              { K.c.thriftReservedKeyword(yytext()); }
+"use"                { K.c.thriftReservedKeyword(yytext()); }
+"var"                { K.c.thriftReservedKeyword(yytext()); }
+"virtual"            { K.c.thriftReservedKeyword(yytext()); }
+"volatile"           { K.c.thriftReservedKeyword(yytext()); }
+"when"               { K.c.thriftReservedKeyword(yytext()); }
+"while"              { K.c.thriftReservedKeyword(yytext()); }
+"with"               { K.c.thriftReservedKeyword(yytext()); }
+"xor"                { K.c.thriftReservedKeyword(yytext()); }
+"yield"              { K.c.thriftReservedKeyword(yytext()); }
 
 {intconstant} {
-  yylval.iconst = Long.parseLong(yytext);
-  return K.s(YYParser.tok_int_constant);
+  return K.s(YYParser.tok_int_constant,
+      new java_cup.runtime.YYLVal(Long.parseLong(yytext())));
 }
 
 {hexconstant} {
-  yylval.iconst = Long.parseLong(yytext.substring(2));
-  return K.s(YYParser.tok_int_constant);
+  return K.s(YYParser.tok_int_constant,
+      new java_cup.runtime.YYLVal(Long.parseLong(yytext().substring(2), 16)));
 }
 
 {dubconstant} {
-  yylval.dconst = Double.parseDouble(yytext);
-  return K.s(YYParser.tok_dub_constant);
+  return K.s(YYParser.tok_dub_constant,
+      new java_cup.runtime.YYLVal(Double.parseDouble(yytext())));
 }
 
 {identifier} {
-  yylval.id = new String(yytext);
-  return K.s(YYParser.tok_identifier);
+  return K.s(YYParser.tok_identifier,
+      new java_cup.runtime.YYLVal(yytext()));
 }
 
 {st_identifier} {
-  yylval.id = new String(yytext);
-  return K.s(YYParser.tok_st_identifier);
+  return K.s(YYParser.tok_st_identifier,
+      new java_cup.runtime.YYLVal(yytext()));
 }
 
 {literal_begin} {
-  char mark = yytext[0];
+  String text = yytext();
   StringBuffer result = new StringBuffer();
-  for(;;)
+  for(int i = 0; i < text.length(); ++i)
   {
-    int ch = yyinput();
+    char ch = text.charAt(i);
     switch (ch) {
-      case EOF:
-        System.err.println("End of file while read string at "+yylineno+"\n");
-        System.exit(1);
       case '\n':
-        System.err.println("End of line while read string at "+(yylineno-1)+"\n");
+        System.err.println("End of line while read string at "+(yyline-1)+"\n");
         System.exit(1);
       case '\\':
-        ch = yyinput();
+        ++i; ch = text.charAt(i);
         switch (ch) {
           case 'r':
             result.append('\r');
@@ -315,42 +294,31 @@ literal_begin = (['\"])
             result.append('\\');
             continue;
           default:
-            yyerror("Bad escape character\n");
-            return -1;
-        }
-        break;
+	    throw new IllegalArgumentException("Bad escape character: "+ch);
+      }
       default:
-        if (ch == mark) {
-          yylval.id = new String(result.toString());
-          return K.s(YYParser.tok_literal);
-        } else {
-          result.append(ch);
-        }
+        result.append(ch);
     }
   }
+  return K.s(YYParser.tok_literal,
+    new java_cup.runtime.YYLVal(result.toString()));
 }
 
 
 {doctext} {
  /* This does not show up in the parse tree. */
  /* Rather, the parser will grab it out of the global. */
-  if (K.c.parseMode == PROGRAM) {
+  if (K.c.parseMode == Context.ParseMode.PROGRAM) {
     // TODO - un-hack
     K.c.clear_doctext();
-    K.c.doctext = new String(yytext);
+    K.c.doctext = new String(yytext());
     //K.c.doctext = clean_up_doctext(g_doctext);
-    K.c.doctext_lineno = yylineno;
+    K.c.doctextLineno = yyline;
   }
 }
 
 . {
-  K.c.unexpectedToken(yytext);
+  K.c.unexpectedToken(yytext());
 }
-
-
-/*. {
-  /* Catch-all to let us catch "*" in the parser. */
-  return (int) yytext[0];
-}*/
 
 
