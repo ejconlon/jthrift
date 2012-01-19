@@ -26,8 +26,16 @@ public class TProgram extends TDoc {
         namespaces.put(lang, ns);
     }
 
+    public Map<Id, Id> getNamespaces() {
+	return namespaces;
+    }
+
     public void addCppInclude(Id path) {
         cppIncludes.add(path);
+    }
+
+    public List<Id> getCppIncludes() {
+	return cppIncludes;
     }
 
     public void addInclude(Id path, Id include_site) {
@@ -37,27 +45,55 @@ public class TProgram extends TDoc {
         includes.add(prog);
     }
 
+    public List<TProgram> getIncludes() {
+	return includes;
+    }
+
     public void addConst(TConst a) {
         consts.add(a);
+    }
+
+    public List<TConst> getConsts() {
+	return consts;
     }
 
     public void addService(TService a) {
         services.add(a);
     }
 
+    public List<TService> getServices() {
+	return services;
+    }
+
     public void addTypedef(TTypedef a) {
         typedefs.add(a);
+    }
+
+    public List<TTypedef> getTypedefs() {
+	return typedefs;
     }
 
     public void addEnum(TEnum a) {
         tenums.add(a);
     }
 
+    public List<TEnum> getEnums() {
+	return tenums;
+    }
+
     public void addStruct(TStruct a) {
         structs.add(a);
     }
 
+    public List<TStruct> getStructs() {
+	return structs;
+    }
+
     public void addXception(TStruct a) {
         xceptions.add(a);
+    }
+
+    public List<TStruct> getXceptions() {
+	return xceptions;
     }
 }

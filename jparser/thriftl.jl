@@ -66,6 +66,8 @@ unixcomment   = ("#"[^\n]*)
 symbol        = ([:;\,\{\}\(\)\=<>\[\]])
 st_identifier = ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 literal_begin = (['\"])
+single_quote_literal = ('[^']*')
+double_quote_literal = (\"[^\"]*\")
 
 %%
 
@@ -262,46 +264,14 @@ literal_begin = (['\"])
       new java_cup.runtime.YYLVal(yytext()));
 }
 
-{literal_begin} {
-  String text = yytext();
-  StringBuffer result = new StringBuffer();
-  for(int i = 0; i < text.length(); ++i)
-  {
-    char ch = text.charAt(i);
-    switch (ch) {
-      case '\n':
-        System.err.println("End of line while read string at "+(yyline-1)+"\n");
-        System.exit(1);
-      case '\\':
-        ++i; ch = text.charAt(i);
-        switch (ch) {
-          case 'r':
-            result.append('\r');
-            continue;
-          case 'n':
-            result.append('\n');
-            continue;
-          case 't':
-            result.append('\t');
-            continue;
-          case '"':
-            result.append('"');
-            continue;
-          case '\'':
-            result.append('\'');
-            continue;
-          case '\\':
-            result.append('\\');
-            continue;
-          default:
-	    throw new IllegalArgumentException("Bad escape character: "+ch);
-      }
-      default:
-        result.append(ch);
-    }
-  }
+{single_quote_literal} {
   return K.s(YYParser.tok_literal,
-    new java_cup.runtime.YYLVal(result.toString()));
+      new java_cup.runtime.YYLVal(yytext()));
+}
+
+{double_quote_literal} {
+  return K.s(YYParser.tok_literal,
+      new java_cup.runtime.YYLVal(yytext()));
 }
 
 
@@ -309,10 +279,8 @@ literal_begin = (['\"])
  /* This does not show up in the parse tree. */
  /* Rather, the parser will grab it out of the global. */
   if (K.c.parseMode == Context.ParseMode.PROGRAM) {
-    // TODO - un-hack
     K.c.clear_doctext();
-    K.c.doctext = new String(yytext());
-    //K.c.doctext = clean_up_doctext(g_doctext);
+    K.c.doctext = new DText(yytext());
     K.c.doctextLineno = yyline;
   }
 }

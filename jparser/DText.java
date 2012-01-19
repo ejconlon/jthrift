@@ -7,11 +7,11 @@ public class DText {
         this.value = value;
     }
 
-    public static DText fromString(String value) {
-	return new DText(value);
+    public String rawString() {
+	return value;
     }
 
     public String toString() {
-        return value;
+        return "DText<"+value+">";
     }
 }

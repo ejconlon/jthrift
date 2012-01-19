@@ -22,13 +22,14 @@ public class Context {
     public ParseMode parseMode = ParseMode.PROGRAM;
 
     public int doctextLineno;
-    public String doctext;
+    public DText doctext;
 
     public void clear_doctext() {
         if (doctext != null) {
             pwarning(2, "Uncaptured doctext: "+doctext);
         }
         doctext = null;
+	doctextLineno = -1;
     }
 
     /**

@@ -30,4 +30,8 @@ public class TStruct extends TType {
 
     @Override
     public VirtualType getVirtualType() { return VirtualType.STRUCT; }
+
+    public List<TField> getFields() {
+	return fields;
+    }
 }
