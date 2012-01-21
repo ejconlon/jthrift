@@ -22,7 +22,7 @@ public class java_cup {
             }
 
             public String toString() {
-                return "" +val.toString()+">";
+                return "YYLVal<" +val.toString()+">";
             }
 
         }
@@ -42,7 +42,7 @@ public class java_cup {
             public String toString() {
                 String name = TokLookup.lookup(dex);
                 if (name == null) name = "" +(char)dex+">";
-                return "" +name+","+lv+">";
+                return "Symbol<" +name+","+lv+">";
             }
         }
 

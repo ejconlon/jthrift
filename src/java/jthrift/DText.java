@@ -12,6 +12,6 @@ public class DText {
     }
 
     public String toString() {
-        return "" +value+">";
+        return "DText<" +value+">";
     }
 }

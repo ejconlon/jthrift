@@ -5,7 +5,7 @@ import java.util.*;
 public class ParseTest implements Runnable {
 
     final String example = ""+
-            "" +
+            "struct UserProfile {" +
             "  1: i32 uid,"+
             "  2: string name,"+
             "  3: string blurb"+
@@ -30,7 +30,7 @@ public class ParseTest implements Runnable {
         List<TStruct> structs = program.getStructs();
         massert(structs.size() == 1);
         TStruct profile = structs.get(0);
-        massert(profile.getName().equals(new Id("")));
+        massert(profile.getName().equals(new Id("UserProfile")));
     }
 
     @Override

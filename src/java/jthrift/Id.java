@@ -12,7 +12,7 @@ public class Id {
     }
 
     public String toString() {
-        return "" +value+">";
+        return "Id<" +value+">";
     }
 
     public boolean equals(Object o) {

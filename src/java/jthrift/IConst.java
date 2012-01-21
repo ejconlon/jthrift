@@ -24,6 +24,6 @@ public class IConst {
     }
 
     public String toString() {
-        return "" +llong+">";
+        return "IConst<" +llong+">";
     }
 }
