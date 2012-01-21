@@ -8,7 +8,7 @@ public class DText {
     }
 
     public String rawString() {
-	return value;
+        return value;
     }
 
     public String toString() {

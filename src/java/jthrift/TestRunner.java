@@ -9,20 +9,20 @@ public class TestRunner implements Runnable {
     public TestRunner() {}
 
     public void add(Runnable test) {
-	tests.add(test);
+        tests.add(test);
     }
 
     @Override
     public void run() {
-	for (Runnable test : tests) {
-	    test.run();
-	}
+        for (Runnable test : tests) {
+            test.run();
+        }
     }
 
     public static void main(String[] args) {
-	TestRunner runner = new TestRunner();
-	runner.add(new ParseTest());
-	runner.run();
+        TestRunner runner = new TestRunner();
+        runner.add(new ParseTest());
+        runner.run();
     }
 
 }

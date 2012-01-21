@@ -4,7 +4,7 @@ import java.util.*;
 
 public class TType extends TDoc {
     public static enum ConcreteType {
-	    VOID,
+        VOID,
         STRING,
         BOOL,
         BYTE,

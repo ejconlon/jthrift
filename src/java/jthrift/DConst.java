@@ -10,6 +10,6 @@ public class DConst {
     public Double getDouble() { return ddouble; }
 
     public String toString() {
-	return "" +ddouble+">";
+        return "" +ddouble+">";
     }
 }

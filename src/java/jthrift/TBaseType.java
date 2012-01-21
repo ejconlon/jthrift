@@ -24,7 +24,7 @@ public class TBaseType extends TType {
         super(value);
         concreteType = type;
     }
-    
+
 
     public void addStringEnumVal(Id value) {
         if (stringEnumVals == null) stringEnumVals = new LinkedList<Id>();

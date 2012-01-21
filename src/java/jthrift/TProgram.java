@@ -27,7 +27,7 @@ public class TProgram extends TDoc {
     }
 
     public Map<Id, Id> getNamespaces() {
-	return namespaces;
+        return namespaces;
     }
 
     public void addCppInclude(Id path) {
@@ -35,7 +35,7 @@ public class TProgram extends TDoc {
     }
 
     public List<Id> getCppIncludes() {
-	return cppIncludes;
+        return cppIncludes;
     }
 
     public void addInclude(Id path, Id include_site) {
@@ -46,7 +46,7 @@ public class TProgram extends TDoc {
     }
 
     public List<TProgram> getIncludes() {
-	return includes;
+        return includes;
     }
 
     public void addConst(TConst a) {
@@ -54,7 +54,7 @@ public class TProgram extends TDoc {
     }
 
     public List<TConst> getConsts() {
-	return consts;
+        return consts;
     }
 
     public void addService(TService a) {
@@ -62,7 +62,7 @@ public class TProgram extends TDoc {
     }
 
     public List<TService> getServices() {
-	return services;
+        return services;
     }
 
     public void addTypedef(TTypedef a) {
@@ -70,7 +70,7 @@ public class TProgram extends TDoc {
     }
 
     public List<TTypedef> getTypedefs() {
-	return typedefs;
+        return typedefs;
     }
 
     public void addEnum(TEnum a) {
@@ -78,7 +78,7 @@ public class TProgram extends TDoc {
     }
 
     public List<TEnum> getEnums() {
-	return tenums;
+        return tenums;
     }
 
     public void addStruct(TStruct a) {
@@ -86,7 +86,7 @@ public class TProgram extends TDoc {
     }
 
     public List<TStruct> getStructs() {
-	return structs;
+        return structs;
     }
 
     public void addXception(TStruct a) {
@@ -94,6 +94,6 @@ public class TProgram extends TDoc {
     }
 
     public List<TStruct> getXceptions() {
-	return xceptions;
+        return xceptions;
     }
 }

@@ -7,9 +7,9 @@ public class TField extends TDoc {
     private Map<Id, Id> annos = new HashMap<Id, Id>();
 
     public static enum Mods {
-	REQUIRED,
-	OPTIONAL,
-	OPT_IN_REQ_OUT
+        REQUIRED,
+        OPTIONAL,
+        OPT_IN_REQ_OUT
     }
 
     TType type;
@@ -27,7 +27,7 @@ public class TField extends TDoc {
         this.name = name;
         this.key = key;
     }
-    
+
     public void setMod(Mods mod) {
         this.mod = mod;
     }

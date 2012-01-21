@@ -20,10 +20,10 @@ public class IConst {
     }
 
     public boolean isAutoAssigned() {
-	return aa;
+        return aa;
     }
 
     public String toString() {
-	return "" +llong+">";
+        return "" +llong+">";
     }
 }

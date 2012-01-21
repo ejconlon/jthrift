@@ -32,6 +32,6 @@ public class TStruct extends TType {
     public VirtualType getVirtualType() { return VirtualType.STRUCT; }
 
     public List<TField> getFields() {
-	return fields;
+        return fields;
     }
 }

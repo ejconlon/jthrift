@@ -16,10 +16,10 @@ public class Id {
     }
 
     public boolean equals(Object o) {
-	return (o != null && o instanceof Id && ((Id)o).rawString().equals(value));
+        return (o != null && o instanceof Id && ((Id)o).rawString().equals(value));
     }
 
     public int hashCode() {
-	return value.hashCode();
+        return value.hashCode();
     }
 }
