@@ -1,9 +1,8 @@
-
-/* A Bison parser, made by GNU Bison 2.4.1.  */
+/* A Bison parser, made by GNU Bison 2.5.  */
 
 /* Skeleton implementation for Bison LALR(1) parsers in Java
    
-      Copyright (C) 2007, 2008 Free Software Foundation, Inc.
+      Copyright (C) 2007-2011 Free Software Foundation, Inc.
    
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -69,6 +68,7 @@
 
 package jthrift;
 
+import java.util.Map;
 import java.util.List;
 
 class C {
@@ -79,7 +79,7 @@ class C {
 
 
 /* Line 33 of lalr1.java  */
-/* Line 84 of "YYParser.java"  */
+/* Line 83 of "YYParser.java"  */
 
 /**
  * A Bison parser, automatically generated from <tt>thrifty.jy</tt>.
@@ -89,10 +89,10 @@ class C {
 class YYParser
 {
     /** Version number for the Bison executable that generated this parser.  */
-  public static final String bisonVersion = "";
+  public static final String bisonVersion = "2.5";
 
   /** Name of the skeleton that generated this parser.  */
-  public static final String bisonSkeleton = "";
+  public static final String bisonSkeleton = "lalr1.java";
 
 
   /** True if verbose error messages are enabled.  */
@@ -228,7 +228,7 @@ class YYParser
     /**
      * Entry point for the scanner.  Returns the token identifier corresponding
      * to the next token and prepares to return the semantic value
-     * of the token. 
+     * of the token.
      * @return the token identifier corresponding to the next token. */
     int yylex () throws java.io.IOException;
 
@@ -307,16 +307,16 @@ class YYParser
 
     public int size = 16;
     public int height = -1;
-    
-    public final void push (int state, Object value    	   	      	    ) {
+
+    public final void push (int state, Object value			    ) {
       height++;
-      if (size == height) 
+      if (size == height)
         {
 	  int[] newStateStack = new int[size * 2];
 	  System.arraycopy (stateStack, 0, newStateStack, 0, height);
 	  stateStack = newStateStack;
 	  
-	  
+
 	  Object[] newValueStack = new Object[size * 2];
 	  System.arraycopy (valueStack, 0, newValueStack, 0, height);
 	  valueStack = newValueStack;
@@ -330,13 +330,13 @@ class YYParser
     }
 
     public final void pop () {
-      height--;
+      pop (1);
     }
 
     public final void pop (int num) {
       // Avoid memory leaks... garbage collection is a white lie!
       if (num > 0) {
-	java.util.Arrays.fill (valueStack, height - num + 1, height, null);
+	java.util.Arrays.fill (valueStack, height - num + 1, height + 1, null);
         
       }
       height -= num;
@@ -353,9 +353,9 @@ class YYParser
     // Print the state stack on the debug stream.
     public void print (java.io.PrintStream out)
     {
-      out.print ("");
-      
-      for (int i = 0; i < height; i++)
+      out.print ("Stack now");
+
+      for (int i = 0; i <= height; i++)
         {
 	  out.print (' ');
 	  out.print (stateStack[i]);
@@ -379,11 +379,9 @@ class YYParser
    * printing an error message.  */
   public static final int YYERROR = 2;
 
-  /**
-   * Returned by a Bison action in order to print an error message and start
-   * error recovery.  */
-  public static final int YYFAIL = 3;
-
+  // Internal return codes that are not supported for user semantic
+  // actions.
+  private static final int YYERRLAB = 3;
   private static final int YYNEWSTATE = 4;
   private static final int YYDEFAULT = 5;
   private static final int YYREDUCE = 6;
@@ -408,7 +406,7 @@ class YYParser
 
     /* If YYLEN is nonzero, implement the default value of the action:
        `$$ = $1'.  Otherwise, use the top of the stack.
-    
+
        Otherwise, the following line sets YYVAL to garbage.
        This behavior is undocumented and Bison
        users should not rely upon it.  */
@@ -416,7 +414,7 @@ class YYParser
       yyval = yystack.valueAt (yylen - 1);
     else
       yyval = yystack.valueAt (0);
-    
+
     yy_reduce_print (yyn, yystack);
 
     switch (yyn)
@@ -424,10 +422,10 @@ class YYParser
 	  case 2:
   if (yyn == 2)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 196 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("Program . Headers DefinitionList");
       /*
       TODO(dreiss): Decide whether full-program doctext is worth the trouble.
       if ($1 != null) {
@@ -442,7 +440,7 @@ class YYParser
   case 3:
   if (yyn == 3)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 208 of "thrifty.jy"  */
     {
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
@@ -458,7 +456,7 @@ class YYParser
   case 4:
   if (yyn == 4)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 219 of "thrifty.jy"  */
     {
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
@@ -471,10 +469,10 @@ class YYParser
   case 5:
   if (yyn == 5)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 229 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("HeaderList . HeaderList Header");
     };
   break;
     
@@ -482,10 +480,10 @@ class YYParser
   case 6:
   if (yyn == 6)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 233 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("HeaderList . ");
     };
   break;
     
@@ -493,10 +491,10 @@ class YYParser
   case 7:
   if (yyn == 7)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 239 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("Header . Include");
     };
   break;
     
@@ -504,10 +502,10 @@ class YYParser
   case 8:
   if (yyn == 8)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 243 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("Header . tok_namespace tok_identifier tok_identifier");
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
         C.c.program.setNamespace(((Id)(yystack.valueAt (3-(2)))), ((Id)(yystack.valueAt (3-(3)))));
       }
@@ -518,12 +516,12 @@ class YYParser
   case 9:
   if (yyn == 9)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 250 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("Header . tok_namespace * tok_identifier");
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
-        C.c.program.setNamespace(new Id(""), ((Id)(yystack.valueAt (3-(3)))));
+        C.c.program.setNamespace(new Id("*"), ((Id)(yystack.valueAt (3-(3)))));
       }
     };
   break;
@@ -532,13 +530,13 @@ class YYParser
   case 10:
   if (yyn == 10)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 258 of "thrifty.jy"  */
     {
-      C.c.pwarning(1, "");
-      C.c.pdebug("");
+      C.c.pwarning(1, "'cpp_namespace' is deprecated. Use 'namespace cpp' instead");
+      C.c.pdebug("Header . tok_cpp_namespace tok_identifier");
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
-        C.c.program.setNamespace(new Id(""), ((Id)(yystack.valueAt (2-(2)))));
+        C.c.program.setNamespace(new Id("cpp"), ((Id)(yystack.valueAt (2-(2)))));
       }
     };
   break;
@@ -547,10 +545,10 @@ class YYParser
   case 11:
   if (yyn == 11)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 266 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("Header . tok_cpp_include tok_literal");
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
         C.c.program.addCppInclude(((Id)(yystack.valueAt (2-(2)))));
       }
@@ -561,13 +559,13 @@ class YYParser
   case 12:
   if (yyn == 12)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 273 of "thrifty.jy"  */
     {
-      C.c.pwarning(1, "");
-      C.c.pdebug("");
+      C.c.pwarning(1, "'php_namespace' is deprecated. Use 'namespace php' instead");
+      C.c.pdebug("Header . tok_php_namespace tok_identifier");
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
-        C.c.program.setNamespace(new Id(""), ((Id)(yystack.valueAt (2-(2)))));
+        C.c.program.setNamespace(new Id("php"), ((Id)(yystack.valueAt (2-(2)))));
       }
     };
   break;
@@ -576,13 +574,13 @@ class YYParser
   case 13:
   if (yyn == 13)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 282 of "thrifty.jy"  */
     {
-      C.c.pwarning(1, "");
-      C.c.pdebug("");
+      C.c.pwarning(1, "'py_module' is deprecated. Use 'namespace py' instead");
+      C.c.pdebug("Header . tok_py_module tok_identifier");
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
-        C.c.program.setNamespace(new Id(""), ((Id)(yystack.valueAt (2-(2)))));
+        C.c.program.setNamespace(new Id("py"), ((Id)(yystack.valueAt (2-(2)))));
       }
     };
   break;
@@ -591,13 +589,13 @@ class YYParser
   case 14:
   if (yyn == 14)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 291 of "thrifty.jy"  */
     {
-      C.c.pwarning(1, "");
-      C.c.pdebug("");
+      C.c.pwarning(1, "'perl_package' is deprecated. Use 'namespace perl' instead");
+      C.c.pdebug("Header . tok_perl_namespace tok_identifier");
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
-        C.c.program.setNamespace(new Id(""), ((Id)(yystack.valueAt (2-(2)))));
+        C.c.program.setNamespace(new Id("perl"), ((Id)(yystack.valueAt (2-(2)))));
       }
     };
   break;
@@ -606,13 +604,13 @@ class YYParser
   case 15:
   if (yyn == 15)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 300 of "thrifty.jy"  */
     {
-      C.c.pwarning(1, "");
-      C.c.pdebug("");
+      C.c.pwarning(1, "'ruby_namespace' is deprecated. Use 'namespace rb' instead");
+      C.c.pdebug("Header . tok_ruby_namespace tok_identifier");
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
-        C.c.program.setNamespace(new Id(""), ((Id)(yystack.valueAt (2-(2)))));
+        C.c.program.setNamespace(new Id("rb"), ((Id)(yystack.valueAt (2-(2)))));
       }
     };
   break;
@@ -621,13 +619,13 @@ class YYParser
   case 16:
   if (yyn == 16)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 309 of "thrifty.jy"  */
     {
-      C.c.pwarning(1, "");
-      C.c.pdebug("");
+      C.c.pwarning(1, "'smalltalk_category' is deprecated. Use 'namespace smalltalk.category' instead");
+      C.c.pdebug("Header . tok_smalltalk_category tok_st_identifier");
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
-        C.c.program.setNamespace(new Id(""), ((Id)(yystack.valueAt (2-(2)))));
+        C.c.program.setNamespace(new Id("smalltalk.category"), ((Id)(yystack.valueAt (2-(2)))));
       }
     };
   break;
@@ -636,13 +634,13 @@ class YYParser
   case 17:
   if (yyn == 17)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 318 of "thrifty.jy"  */
     {
-      C.c.pwarning(1, "");
-      C.c.pdebug("");
+      C.c.pwarning(1, "'smalltalk_prefix' is deprecated. Use 'namespace smalltalk.prefix' instead");
+      C.c.pdebug("Header . tok_smalltalk_prefix tok_identifier");
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
-        C.c.program.setNamespace(new Id(""), ((Id)(yystack.valueAt (2-(2)))));
+        C.c.program.setNamespace(new Id("smalltalk.prefix"), ((Id)(yystack.valueAt (2-(2)))));
       }
     };
   break;
@@ -651,11 +649,11 @@ class YYParser
   case 18:
   if (yyn == 18)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 327 of "thrifty.jy"  */
     {
-      C.c.pwarning(1, "");
-      C.c.pdebug("");
+      C.c.pwarning(1, "'java_package' is deprecated. Use 'namespace java' instead");
+      C.c.pdebug("Header . tok_java_package tok_identifier");
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
         C.c.program.setNamespace(new Id("java"), ((Id)(yystack.valueAt (2-(2)))));
       }
@@ -666,13 +664,13 @@ class YYParser
   case 19:
   if (yyn == 19)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 336 of "thrifty.jy"  */
     {
-      C.c.pwarning(1, "");
-      C.c.pdebug("");
+      C.c.pwarning(1, "'cocoa_prefix' is deprecated. Use 'namespace cocoa' instead");
+      C.c.pdebug("Header . tok_cocoa_prefix tok_identifier");
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
-        C.c.program.setNamespace(new Id(""), ((Id)(yystack.valueAt (2-(2)))));
+        C.c.program.setNamespace(new Id("cocoa"), ((Id)(yystack.valueAt (2-(2)))));
       }
     };
   break;
@@ -681,13 +679,13 @@ class YYParser
   case 20:
   if (yyn == 20)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 345 of "thrifty.jy"  */
     {
-      C.c.pwarning(1, "");
-      C.c.pdebug("");
+      C.c.pwarning(1, "'xsd_namespace' is deprecated. Use 'namespace xsd' instead");
+      C.c.pdebug("Header . tok_xsd_namespace tok_literal");
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
-        C.c.program.setNamespace(new Id(""), ((Id)(yystack.valueAt (2-(2)))));
+        C.c.program.setNamespace(new Id("cocoa"), ((Id)(yystack.valueAt (2-(2)))));
       }
     };
   break;
@@ -696,13 +694,13 @@ class YYParser
   case 21:
   if (yyn == 21)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 354 of "thrifty.jy"  */
     {
-     C.c.pwarning(1, "");
-     C.c.pdebug("");
+     C.c.pwarning(1, "'csharp_namespace' is deprecated. Use 'namespace csharp' instead");
+     C.c.pdebug("Header . tok_csharp_namespace tok_identifier");
      if (C.c.parseMode == Context.ParseMode.PROGRAM) {
-       C.c.program.setNamespace(new Id(""), ((Id)(yystack.valueAt (2-(2)))));
+       C.c.program.setNamespace(new Id("csharp"), ((Id)(yystack.valueAt (2-(2)))));
      }
    };
   break;
@@ -711,13 +709,13 @@ class YYParser
   case 22:
   if (yyn == 22)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 363 of "thrifty.jy"  */
     {
-     C.c.pwarning(1, "");
-     C.c.pdebug("");
+     C.c.pwarning(1, "'delphi_namespace' is deprecated. Use 'namespace delphi' instead");
+     C.c.pdebug("Header . tok_delphi_namespace tok_identifier");
      if (C.c.parseMode == Context.ParseMode.PROGRAM) {
-       C.c.program.setNamespace(new Id(""), ((Id)(yystack.valueAt (2-(2)))));
+       C.c.program.setNamespace(new Id("delphi"), ((Id)(yystack.valueAt (2-(2)))));
      }
    };
   break;
@@ -726,10 +724,10 @@ class YYParser
   case 23:
   if (yyn == 23)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 373 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("Include . tok_include tok_literal");
       if (C.c.parseMode == Context.ParseMode.INCLUDES) {
         Id path = C.c.includeFile(((Id)(yystack.valueAt (2-(2)))));
         if (path.rawString().length() > 0) {
@@ -743,10 +741,10 @@ class YYParser
   case 24:
   if (yyn == 24)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 385 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("DefinitionList . DefinitionList Definition");
       if (((DText)(yystack.valueAt (3-(2)))) != null && ((TDoc)(yystack.valueAt (3-(3)))) != null) {
         ((TDoc)(yystack.valueAt (3-(3)))).setDoc(((DText)(yystack.valueAt (3-(2)))));
       }
@@ -757,10 +755,10 @@ class YYParser
   case 25:
   if (yyn == 25)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 392 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("DefinitionList . ");
     };
   break;
     
@@ -768,10 +766,10 @@ class YYParser
   case 26:
   if (yyn == 26)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 398 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("Definition . Const");
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
         C.c.program.addConst(((TConst)(yystack.valueAt (1-(1)))));
       }
@@ -783,10 +781,10 @@ class YYParser
   case 27:
   if (yyn == 27)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 406 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("Definition . TypeDefinition");
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
         C.c.scope.addType(((TType)(yystack.valueAt (1-(1)))).getName(), ((TType)(yystack.valueAt (1-(1)))));
         if (C.c.parentScope != null) {
@@ -801,10 +799,10 @@ class YYParser
   case 28:
   if (yyn == 28)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 417 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("Definition . Service");
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
         C.c.scope.addService(((TService)(yystack.valueAt (1-(1)))).getName(), ((TService)(yystack.valueAt (1-(1)))));
         if (C.c.parentScope != null) {
@@ -820,10 +818,10 @@ class YYParser
   case 29:
   if (yyn == 29)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 431 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("TypeDefinition . Typedef");
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
         C.c.program.addTypedef(((TTypedef)(yystack.valueAt (1-(1)))));
       }
@@ -834,10 +832,10 @@ class YYParser
   case 30:
   if (yyn == 30)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 438 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("TypeDefinition . Enum");
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
         C.c.program.addEnum(((TEnum)(yystack.valueAt (1-(1)))));
       }
@@ -848,10 +846,10 @@ class YYParser
   case 31:
   if (yyn == 31)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 445 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("TypeDefinition . Senum");
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
         C.c.program.addTypedef(((TTypedef)(yystack.valueAt (1-(1)))));
       }
@@ -862,10 +860,10 @@ class YYParser
   case 32:
   if (yyn == 32)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 452 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("TypeDefinition . Struct");
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
         C.c.program.addStruct(((TStruct)(yystack.valueAt (1-(1)))));
       }
@@ -876,10 +874,10 @@ class YYParser
   case 33:
   if (yyn == 33)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 459 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("TypeDefinition . Xception");
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
         C.c.program.addXception(((TStruct)(yystack.valueAt (1-(1)))));
       }
@@ -890,10 +888,10 @@ class YYParser
   case 34:
   if (yyn == 34)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 468 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("TypeDef . tok_typedef FieldType tok_identifier");
       TTypedef td = new TTypedef(C.c.program, ((TType)(yystack.valueAt (3-(2)))), ((Id)(yystack.valueAt (3-(3)))));
       yyval = td;
     };
@@ -903,7 +901,7 @@ class YYParser
   case 35:
   if (yyn == 35)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 476 of "thrifty.jy"  */
     {};
   break;
@@ -912,7 +910,7 @@ class YYParser
   case 36:
   if (yyn == 36)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 478 of "thrifty.jy"  */
     {};
   break;
@@ -921,7 +919,7 @@ class YYParser
   case 37:
   if (yyn == 37)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 480 of "thrifty.jy"  */
     {};
   break;
@@ -930,10 +928,10 @@ class YYParser
   case 38:
   if (yyn == 38)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 484 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("Enum . tok_enum tok_identifier { EnumDefList }");
       yyval = ((TEnum)(yystack.valueAt (5-(4))));
       TEnum tenum = (TEnum)yyval;
       tenum.setName(((Id)(yystack.valueAt (5-(2)))));
@@ -959,10 +957,10 @@ class YYParser
   case 39:
   if (yyn == 39)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 508 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("EnumDefList . EnumDefList EnumDef");
       yyval = ((TEnum)(yystack.valueAt (2-(1))));
       ((TEnum)yyval).append(((TEnumValue)(yystack.valueAt (2-(2)))));
     };
@@ -972,10 +970,10 @@ class YYParser
   case 40:
   if (yyn == 40)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 514 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("EnumDefList . ");
       yyval = new TEnum(C.c.program);
     };
   break;
@@ -984,15 +982,15 @@ class YYParser
   case 41:
   if (yyn == 41)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 521 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("EnumDef . tok_identifier = tok_int_constant");
       if (((IConst)(yystack.valueAt (5-(4)))).getLong() < 0) {
-        C.c.pwarning(1, "" +((Id)(yystack.valueAt (5-(2))))+".\n");
+        C.c.pwarning(1, "Negative value supplied for enum "+((Id)(yystack.valueAt (5-(2))))+".\n");
       }
       if (((IConst)(yystack.valueAt (5-(4)))).getLong() > Integer.MAX_VALUE) {
-        C.c.pwarning(1, "" +((Id)(yystack.valueAt (5-(2))))+".\n");
+        C.c.pwarning(1, "64-bit value supplied for enum "+((Id)(yystack.valueAt (5-(2))))+".\n");
       }
       yyval = new TEnumValue(((Id)(yystack.valueAt (5-(2)))), ((IConst)(yystack.valueAt (5-(4)))));
       if (((DText)(yystack.valueAt (5-(1)))) != null) {
@@ -1005,10 +1003,10 @@ class YYParser
   case 42:
   if (yyn == 42)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 536 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("EnumDef . tok_identifier");
       yyval = new TEnumValue(((Id)(yystack.valueAt (3-(2)))));
       if (((DText)(yystack.valueAt (3-(1)))) != null) {
         ((TEnumValue)yyval).setDoc(((DText)(yystack.valueAt (3-(1)))));
@@ -1020,10 +1018,10 @@ class YYParser
   case 43:
   if (yyn == 43)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 546 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("Senum . tok_senum tok_identifier { SenumDefList }");
       yyval = new TTypedef(C.c.program, ((TBaseType)(yystack.valueAt (5-(4)))), ((Id)(yystack.valueAt (5-(2)))));
     };
   break;
@@ -1032,10 +1030,10 @@ class YYParser
   case 44:
   if (yyn == 44)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 553 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("SenumDefList . SenumDefList SenumDef");
       yyval = ((TBaseType)(yystack.valueAt (2-(1))));
       ((TBaseType)yyval).addStringEnumVal(((Id)(yystack.valueAt (2-(2)))));
     };
@@ -1045,11 +1043,11 @@ class YYParser
   case 45:
   if (yyn == 45)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 559 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
-      yyval = new TBaseType(new Id(""), TType.ConcreteType.STRING);
+      C.c.pdebug("SenumDefList . ");
+      yyval = new TBaseType(new Id("string"), TType.ConcreteType.STRING);
       ((TBaseType)yyval).setStringEnum(true);
     };
   break;
@@ -1058,10 +1056,10 @@ class YYParser
   case 46:
   if (yyn == 46)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 567 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("SenumDef . tok_literal");
       yyval = ((Id)(yystack.valueAt (2-(1))));
     };
   break;
@@ -1070,10 +1068,10 @@ class YYParser
   case 47:
   if (yyn == 47)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 574 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("Const . tok_const FieldType tok_identifier = ConstValue");
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
         C.c.scope.resolveConstValue(((TConstValue)(yystack.valueAt (6-(5)))), ((TType)(yystack.valueAt (6-(2)))));
         yyval = new TConst(((TType)(yystack.valueAt (6-(2)))), ((Id)(yystack.valueAt (6-(3)))), ((TConstValue)(yystack.valueAt (6-(5)))));
@@ -1093,14 +1091,14 @@ class YYParser
   case 48:
   if (yyn == 48)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 592 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("ConstValue => tok_int_constant");
       yyval = new TConstValue();
       ((TConstValue)yyval).setInteger(((IConst)(yystack.valueAt (1-(1)))));
       if (!C.c.allow64bitConsts && (((IConst)(yystack.valueAt (1-(1)))).getLong() < Integer.MIN_VALUE || ((IConst)(yystack.valueAt (1-(1)))).getLong() > Integer.MAX_VALUE)) {
-        C.c.pwarning(1, "n" +((IConst)(yystack.valueAt (1-(1)))));
+        C.c.pwarning(1, "64-bit constant may not work in all languages.\n"+((IConst)(yystack.valueAt (1-(1)))));
       }
     };
   break;
@@ -1109,10 +1107,10 @@ class YYParser
   case 49:
   if (yyn == 49)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 601 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("ConstValue => tok_dub_constant");
       yyval = new TConstValue();
       ((TConstValue)yyval).setDouble(((DConst)(yystack.valueAt (1-(1)))));
     };
@@ -1122,10 +1120,10 @@ class YYParser
   case 50:
   if (yyn == 50)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 607 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("ConstValue => tok_literal");
       yyval = new TConstValue(((Id)(yystack.valueAt (1-(1)))).rawString());
     };
   break;
@@ -1134,10 +1132,10 @@ class YYParser
   case 51:
   if (yyn == 51)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 612 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("ConstValue => tok_identifier");
       yyval = new TConstValue();
       ((TConstValue)yyval).setIdentifier(((Id)(yystack.valueAt (1-(1)))));
     };
@@ -1147,10 +1145,10 @@ class YYParser
   case 52:
   if (yyn == 52)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 618 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("ConstValue => ConstList");
       yyval = ((TConstValue)(yystack.valueAt (1-(1))));
     };
   break;
@@ -1159,10 +1157,10 @@ class YYParser
   case 53:
   if (yyn == 53)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 623 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("ConstValue => ConstMap");
       yyval = ((TConstValue)(yystack.valueAt (1-(1))));
     };
   break;
@@ -1171,10 +1169,10 @@ class YYParser
   case 54:
   if (yyn == 54)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 630 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("ConstList => [ ConstListContents ]");
       yyval = ((TConstValue)(yystack.valueAt (3-(2))));
     };
   break;
@@ -1183,10 +1181,10 @@ class YYParser
   case 55:
   if (yyn == 55)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 637 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("ConstListContents => ConstListContents ConstValue CommaOrSemicolonOptional");
       yyval = ((TConstValue)(yystack.valueAt (3-(1))));
       ((TConstValue)yyval).addList(((TConstValue)(yystack.valueAt (3-(2)))));
     };
@@ -1196,10 +1194,10 @@ class YYParser
   case 56:
   if (yyn == 56)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 643 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("ConstListContents =>");
       yyval = new TConstValue();
       ((TConstValue)yyval).setList();
     };
@@ -1209,10 +1207,10 @@ class YYParser
   case 57:
   if (yyn == 57)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 651 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("ConstMap => { ConstMapContents }");
       yyval = ((TConstValue)(yystack.valueAt (3-(2))));
     };
   break;
@@ -1221,10 +1219,10 @@ class YYParser
   case 58:
   if (yyn == 58)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 658 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("ConstMapContents => ConstMapContents ConstValue CommaOrSemicolonOptional");
       yyval = ((TConstValue)(yystack.valueAt (5-(1))));
       ((TConstValue)yyval).addMap(((TConstValue)(yystack.valueAt (5-(2)))), ((TConstValue)(yystack.valueAt (5-(4)))));
     };
@@ -1234,10 +1232,10 @@ class YYParser
   case 59:
   if (yyn == 59)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 664 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("ConstMapContents =>");
       yyval = new TConstValue();
       ((TConstValue)yyval).setMap();
     };
@@ -1247,7 +1245,7 @@ class YYParser
   case 60:
   if (yyn == 60)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 672 of "thrifty.jy"  */
     {
       yyval = new IConst(C.c.structIsStruct);
@@ -1258,7 +1256,7 @@ class YYParser
   case 61:
   if (yyn == 61)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 676 of "thrifty.jy"  */
     {
       yyval = new IConst(C.c.structIsUnion);
@@ -1269,10 +1267,10 @@ class YYParser
   case 62:
   if (yyn == 62)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 682 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("Struct . tok_struct tok_identifier { FieldList }");
       ((TStruct)(yystack.valueAt (7-(5)))).setXsdAll(((TBool)(yystack.valueAt (7-(3)))));
       ((TStruct)(yystack.valueAt (7-(5)))).setUnion(new TBool(((IConst)(yystack.valueAt (7-(1)))).getLong().equals(C.c.structIsUnion)));
       yyval = ((TStruct)(yystack.valueAt (7-(5))));
@@ -1287,7 +1285,7 @@ class YYParser
   case 63:
   if (yyn == 63)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 695 of "thrifty.jy"  */
     {
       yyval = new TBool(true);
@@ -1298,7 +1296,7 @@ class YYParser
   case 64:
   if (yyn == 64)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 699 of "thrifty.jy"  */
     {
       yyval = new TBool(false);
@@ -1309,7 +1307,7 @@ class YYParser
   case 65:
   if (yyn == 65)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 705 of "thrifty.jy"  */
     {
       yyval = new TBool(true);
@@ -1320,7 +1318,7 @@ class YYParser
   case 66:
   if (yyn == 66)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 709 of "thrifty.jy"  */
     {
       yyval = new TBool(false);
@@ -1331,7 +1329,7 @@ class YYParser
   case 67:
   if (yyn == 67)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 715 of "thrifty.jy"  */
     {
       yyval = new TBool(true);
@@ -1342,7 +1340,7 @@ class YYParser
   case 68:
   if (yyn == 68)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 719 of "thrifty.jy"  */
     {
       yyval = new TBool(false);
@@ -1353,7 +1351,7 @@ class YYParser
   case 69:
   if (yyn == 69)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 725 of "thrifty.jy"  */
     {
       yyval = ((TStruct)(yystack.valueAt (4-(3))));
@@ -1364,7 +1362,7 @@ class YYParser
   case 70:
   if (yyn == 70)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 729 of "thrifty.jy"  */
     {
       yyval = null;
@@ -1375,10 +1373,10 @@ class YYParser
   case 71:
   if (yyn == 71)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 735 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("Xception . tok_xception tok_identifier { FieldList }");
       ((TStruct)(yystack.valueAt (5-(4)))).setName(((Id)(yystack.valueAt (5-(2)))));
       ((TStruct)(yystack.valueAt (5-(4)))).setXception(new TBool(true));
       yyval = ((TStruct)(yystack.valueAt (5-(4))));
@@ -1389,10 +1387,10 @@ class YYParser
   case 72:
   if (yyn == 72)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 744 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("Service . tok_service tok_identifier { FunctionList }");
       yyval = ((TService)(yystack.valueAt (8-(6))));
       ((TService)yyval).setName(((Id)(yystack.valueAt (8-(2)))));
       ((TService)yyval).setExtends(((TService)(yystack.valueAt (8-(3)))));
@@ -1403,7 +1401,7 @@ class YYParser
   case 73:
   if (yyn == 73)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 752 of "thrifty.jy"  */
     {
        C.c.arglist = 1;
@@ -1414,7 +1412,7 @@ class YYParser
   case 74:
   if (yyn == 74)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 757 of "thrifty.jy"  */
     {
        C.c.arglist = 0;
@@ -1425,15 +1423,15 @@ class YYParser
   case 75:
   if (yyn == 75)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 763 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("Extends . tok_extends tok_identifier");
       yyval = null;
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
         yyval = C.c.scope.getService(((Id)(yystack.valueAt (2-(2)))));
         if (yyval == null) {
-          yyerror("" +((Id)(yystack.valueAt (2-(2))))+" has not been defined.");
+          yyerror("Service "+((Id)(yystack.valueAt (2-(2))))+" has not been defined.");
           System.exit(1);
         }
       }
@@ -1444,7 +1442,7 @@ class YYParser
   case 76:
   if (yyn == 76)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 775 of "thrifty.jy"  */
     {
       yyval = null;
@@ -1455,10 +1453,10 @@ class YYParser
   case 77:
   if (yyn == 77)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 781 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("FunctionList . FunctionList Function");
       yyval = ((TService)(yystack.valueAt (2-(1))));
       ((TService)(yystack.valueAt (2-(1)))).addFunction(((TFunction)(yystack.valueAt (2-(2)))));
     };
@@ -1468,10 +1466,10 @@ class YYParser
   case 78:
   if (yyn == 78)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 787 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("FunctionList . ");
       yyval = new TService(C.c.program);
     };
   break;
@@ -1480,10 +1478,10 @@ class YYParser
   case 79:
   if (yyn == 79)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 794 of "thrifty.jy"  */
     {
-      ((TStruct)(yystack.valueAt (9-(6)))).setName(new Id(((Id)(yystack.valueAt (9-(4)))) + ""));
+      ((TStruct)(yystack.valueAt (9-(6)))).setName(new Id(((Id)(yystack.valueAt (9-(4)))) + "_args"));
       yyval = new TFunction(((TType)(yystack.valueAt (9-(3)))), ((Id)(yystack.valueAt (9-(4)))), ((TStruct)(yystack.valueAt (9-(6)))), ((TStruct)(yystack.valueAt (9-(8)))), ((TBool)(yystack.valueAt (9-(2)))));
       if (((DText)(yystack.valueAt (9-(1)))) != null) {
         ((TFunction)yyval).setDoc(((DText)(yystack.valueAt (9-(1)))));
@@ -1495,7 +1493,7 @@ class YYParser
   case 80:
   if (yyn == 80)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 804 of "thrifty.jy"  */
     {
       yyval = new TBool(true);
@@ -1506,7 +1504,7 @@ class YYParser
   case 81:
   if (yyn == 81)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 808 of "thrifty.jy"  */
     {
       yyval = new TBool(false);
@@ -1517,13 +1515,13 @@ class YYParser
   case 82:
   if (yyn == 82)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 814 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("Throws . tok_throws ( FieldList )");
       yyval = ((TStruct)(yystack.valueAt (4-(3))));
       if (C.c.parseMode == Context.ParseMode.PROGRAM && !C.c.validateThrows(((TStruct)yyval))) {
-        yyerror("");
+        yyerror("Throws clause may not contain non-exception types");
         System.exit(1);
       }
     };
@@ -1533,7 +1531,7 @@ class YYParser
   case 83:
   if (yyn == 83)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 823 of "thrifty.jy"  */
     {
       yyval = new TStruct(C.c.program);
@@ -1544,15 +1542,15 @@ class YYParser
   case 84:
   if (yyn == 84)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 829 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("FieldList . FieldList , Field");
       yyval = ((TStruct)(yystack.valueAt (2-(1))));
       if (!(((TStruct)yyval).append(((TField)(yystack.valueAt (2-(2))))))) {
       	Long key = ((TField)(yystack.valueAt (2-(2)))).getKey().getLong();
 	String name = ((TField)(yystack.valueAt (2-(2)))).getName().rawString();
-        yyerror("" +key+" for \""+name+"\" has already been used");
+        yyerror("Field identifier "+key+" for \""+name+"\" has already been used");
         System.exit(1);
       }
     };
@@ -1562,10 +1560,10 @@ class YYParser
   case 85:
   if (yyn == 85)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 840 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("FieldList . ");
       C.c.fieldVal = -1;
       yyval = new TStruct(C.c.program);
     };
@@ -1575,14 +1573,14 @@ class YYParser
   case 86:
   if (yyn == 86)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 848 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("tok_int_constant : Field . FieldType tok_identifier");
       if (((IConst)(yystack.valueAt (11-(2)))).isAutoAssigned()) {
-        C.c.pwarning(1, "" +((Id)(yystack.valueAt (11-(5))))+", resulting protocol may have conflicts or not be backwards compatible!\n");
+        C.c.pwarning(1, "No field key specified for "+((Id)(yystack.valueAt (11-(5))))+", resulting protocol may have conflicts or not be backwards compatible!\n");
         if (C.c.strict >= 192) {
-          yyerror("");
+          yyerror("Implicit field keys are deprecated and not allowed with -strict");
           System.exit(1);
         }
       }
@@ -1611,7 +1609,7 @@ class YYParser
   case 87:
   if (yyn == 87)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 879 of "thrifty.jy"  */
     {
       if (((IConst)(yystack.valueAt (2-(1)))).getLong() <= 0) {
@@ -1626,7 +1624,7 @@ class YYParser
              * warn if the user-specified negative value isn't what
              * thrift would have auto-assigned.
              */
-            C.c.pwarning(1, "" +((IConst)(yystack.valueAt (2-(1))))+") differs from what would be "+
+            C.c.pwarning(1, "Negative field key ("+((IConst)(yystack.valueAt (2-(1))))+") differs from what would be "+
                      "auto-assigned by thrift ("+C.c.fieldVal+").\n");
           }
           /*
@@ -1637,7 +1635,7 @@ class YYParser
           ((IConst)yyval).setLong(((IConst)(yystack.valueAt (2-(1)))).getLong());
           ((IConst)yyval).setIsAutoAssigned(false);
         } else {
-          C.c.pwarning(1, "" +((IConst)(yystack.valueAt (2-(1))))+") not allowed as a field key.\n");
+          C.c.pwarning(1, "Nonpositive value ("+((IConst)(yystack.valueAt (2-(1))))+") not allowed as a field key.\n");
           ((IConst)yyval).setLong(C.c.fieldVal--);
           ((IConst)yyval).setIsAutoAssigned(true);
         }
@@ -1652,7 +1650,7 @@ class YYParser
   case 88:
   if (yyn == 88)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 913 of "thrifty.jy"  */
     {
       ((IConst)yyval).setLong(C.c.fieldVal--);
@@ -1664,7 +1662,7 @@ class YYParser
   case 89:
   if (yyn == 89)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 920 of "thrifty.jy"  */
     {
       yyval = TField.Mods.REQUIRED;
@@ -1675,12 +1673,12 @@ class YYParser
   case 90:
   if (yyn == 90)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 924 of "thrifty.jy"  */
     {
       if (C.c.arglist != 0) {
         if (C.c.parseMode == Context.ParseMode.PROGRAM) {
-          C.c.pwarning(1, "n");
+          C.c.pwarning(1, "optional keyword is ignored in argument lists.\n");
         }
         yyval = TField.Mods.OPT_IN_REQ_OUT;
       } else {
@@ -1693,7 +1691,7 @@ class YYParser
   case 91:
   if (yyn == 91)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 935 of "thrifty.jy"  */
     {
       yyval = TField.Mods.OPT_IN_REQ_OUT;
@@ -1704,7 +1702,7 @@ class YYParser
   case 92:
   if (yyn == 92)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 941 of "thrifty.jy"  */
     {
       if (C.c.parseMode == Context.ParseMode.PROGRAM) {
@@ -1719,7 +1717,7 @@ class YYParser
   case 93:
   if (yyn == 93)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 949 of "thrifty.jy"  */
     {
       yyval = null;
@@ -1730,10 +1728,10 @@ class YYParser
   case 94:
   if (yyn == 94)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 955 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("FunctionType . FieldType");
       yyval = ((TType)(yystack.valueAt (1-(1))));
     };
   break;
@@ -1742,10 +1740,10 @@ class YYParser
   case 95:
   if (yyn == 95)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 960 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("FunctionType . tok_void");
       yyval = C.c.typeVoid;
     };
   break;
@@ -1754,10 +1752,10 @@ class YYParser
   case 96:
   if (yyn == 96)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 967 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("FieldType . tok_identifier");
       if (C.c.parseMode == Context.ParseMode.INCLUDES) {
         // Ignore identifiers in include mode
         yyval = null;
@@ -1765,7 +1763,7 @@ class YYParser
         // Lookup the identifier in the current scope
         yyval = C.c.scope.getType(((Id)(yystack.valueAt (1-(1)))));
         if (yyval == null) {
-          yyerror("" +((Id)(yystack.valueAt (1-(1))))+" has not been defined.");
+          yyerror("Type "+((Id)(yystack.valueAt (1-(1))))+" has not been defined.");
           System.exit(1);
         }
       }
@@ -1776,10 +1774,10 @@ class YYParser
   case 97:
   if (yyn == 97)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 982 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("FieldType . BaseType");
       yyval = ((TType)(yystack.valueAt (1-(1))));
     };
   break;
@@ -1788,10 +1786,10 @@ class YYParser
   case 98:
   if (yyn == 98)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 987 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("FieldType . ContainerType");
       yyval = ((TType)(yystack.valueAt (1-(1))));
     };
   break;
@@ -1800,10 +1798,10 @@ class YYParser
   case 99:
   if (yyn == 99)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 993 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("BaseType . SimpleBaseType TypeAnnotations");
       if (((TType)(yystack.valueAt (2-(2)))) != null) {
         yyval = new TBaseType((TBaseType)(((TType)(yystack.valueAt (2-(1))))));
         ((TBaseType)yyval).getAnnotations().putAll(((TType)(yystack.valueAt (2-(2)))).getAnnotations());
@@ -1817,10 +1815,10 @@ class YYParser
   case 100:
   if (yyn == 100)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 1005 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("BaseType . tok_string");
       yyval = C.c.typeString;
     };
   break;
@@ -1829,10 +1827,10 @@ class YYParser
   case 101:
   if (yyn == 101)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 1010 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("BaseType . tok_binary");
       yyval = C.c.typeBinary;
     };
   break;
@@ -1841,10 +1839,10 @@ class YYParser
   case 102:
   if (yyn == 102)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 1015 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("BaseType . tok_slist");
       yyval = C.c.typeSlist;
     };
   break;
@@ -1853,10 +1851,10 @@ class YYParser
   case 103:
   if (yyn == 103)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 1020 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("BaseType . tok_bool");
       yyval = C.c.typeBool;
     };
   break;
@@ -1865,10 +1863,10 @@ class YYParser
   case 104:
   if (yyn == 104)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 1025 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("BaseType . tok_byte");
       yyval = C.c.typeByte;
     };
   break;
@@ -1877,10 +1875,10 @@ class YYParser
   case 105:
   if (yyn == 105)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 1030 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("BaseType . tok_i16");
       yyval = C.c.typeI16;
     };
   break;
@@ -1889,10 +1887,10 @@ class YYParser
   case 106:
   if (yyn == 106)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 1035 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("BaseType . tok_i32");
       yyval = C.c.typeI32;
     };
   break;
@@ -1901,10 +1899,10 @@ class YYParser
   case 107:
   if (yyn == 107)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 1040 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("BaseType . tok_i64");
       yyval = C.c.typeI64;
     };
   break;
@@ -1913,10 +1911,10 @@ class YYParser
   case 108:
   if (yyn == 108)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 1045 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("BaseType . tok_double");
       yyval = C.c.typeDouble;
     };
   break;
@@ -1925,10 +1923,10 @@ class YYParser
   case 109:
   if (yyn == 109)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 1051 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("ContainerType . SimpleContainerType TypeAnnotations");
       yyval = ((TType)(yystack.valueAt (2-(1))));
       if (((TType)(yystack.valueAt (2-(2)))) != null) {
         ((TContainer)yyval).getAnnotations().putAll(((TType)(yystack.valueAt (2-(2)))).getAnnotations());
@@ -1940,10 +1938,10 @@ class YYParser
   case 110:
   if (yyn == 110)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 1061 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("SimpleContainerType . MapType");
       yyval = ((TType)(yystack.valueAt (1-(1))));
     };
   break;
@@ -1952,10 +1950,10 @@ class YYParser
   case 111:
   if (yyn == 111)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 1066 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("SimpleContainerType . SetType");
       yyval = ((TType)(yystack.valueAt (1-(1))));
     };
   break;
@@ -1964,10 +1962,10 @@ class YYParser
   case 112:
   if (yyn == 112)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 1071 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("SimpleContainerType . ListType");
       yyval = ((TType)(yystack.valueAt (1-(1))));
     };
   break;
@@ -1976,10 +1974,10 @@ class YYParser
   case 113:
   if (yyn == 113)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 1078 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("MapType . tok_map <FieldType, FieldType>");
       yyval = new TMap(((TType)(yystack.valueAt (7-(4)))), ((TType)(yystack.valueAt (7-(6)))));
       if (((Id)(yystack.valueAt (7-(2)))) != null) {
         ((TContainer)yyval).setCppName(((Id)(yystack.valueAt (7-(2)))));
@@ -1991,10 +1989,10 @@ class YYParser
   case 114:
   if (yyn == 114)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 1088 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("SetType . tok_set<FieldType>");
       yyval = new TSet(((TType)(yystack.valueAt (5-(4)))));
       if (((Id)(yystack.valueAt (5-(2)))) != null) {
         ((TContainer)yyval).setCppName(((Id)(yystack.valueAt (5-(2)))));
@@ -2006,10 +2004,10 @@ class YYParser
   case 115:
   if (yyn == 115)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 1098 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("ListType . tok_list<FieldType>");
       yyval = new TList(((TType)(yystack.valueAt (5-(3)))));
       if (((Id)(yystack.valueAt (5-(5)))) != null) {
         ((TContainer)yyval).setCppName(((Id)(yystack.valueAt (5-(5)))));
@@ -2021,7 +2019,7 @@ class YYParser
   case 116:
   if (yyn == 116)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 1108 of "thrifty.jy"  */
     {
       yyval = ((Id)(yystack.valueAt (2-(2))));
@@ -2032,7 +2030,7 @@ class YYParser
   case 117:
   if (yyn == 117)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 1112 of "thrifty.jy"  */
     {
       yyval = null;
@@ -2043,10 +2041,10 @@ class YYParser
   case 118:
   if (yyn == 118)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 1118 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("TypeAnnotations . ( TypeAnnotationList )");
       yyval = ((TType)(yystack.valueAt (3-(2))));
     };
   break;
@@ -2055,7 +2053,7 @@ class YYParser
   case 119:
   if (yyn == 119)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 1123 of "thrifty.jy"  */
     {
       yyval = null;
@@ -2066,10 +2064,10 @@ class YYParser
   case 120:
   if (yyn == 120)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 1129 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("TypeAnnotationList . TypeAnnotationList , TypeAnnotation");
       yyval = ((TType)(yystack.valueAt (2-(1))));
       ((TType)yyval).getAnnotations().put(((TAnnotation)(yystack.valueAt (2-(2)))).getKey(), ((TAnnotation)(yystack.valueAt (2-(2)))).getValue());
     };
@@ -2079,7 +2077,7 @@ class YYParser
   case 121:
   if (yyn == 121)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 1135 of "thrifty.jy"  */
     {
       /* Just use a dummy structure to hold the annotations. */
@@ -2091,10 +2089,10 @@ class YYParser
   case 122:
   if (yyn == 122)
     
-/* Line 353 of lalr1.java  */
+/* Line 351 of lalr1.java  */
 /* Line 1142 of "thrifty.jy"  */
     {
-      C.c.pdebug("");
+      C.c.pdebug("TypeAnnotation . tok_identifier = tok_literal");
       yyval = new TAnnotation();
       ((TAnnotation)yyval).setKey(((Id)(yystack.valueAt (4-(1)))));
       ((TAnnotation)yyval).setValue(((Id)(yystack.valueAt (4-(3)))));
@@ -2104,12 +2102,12 @@ class YYParser
 
 
 
-/* Line 353 of lalr1.java  */
-/* Line 2110 of "YYParser.java"  */
+/* Line 351 of lalr1.java  */
+/* Line 2107 of "YYParser.java"  */
 	default: break;
       }
 
-    yy_symbol_print ("", yyr1_[yyn], yyval);
+    yy_symbol_print ("-> $$ =", yyr1_[yyn], yyval);
 
     yystack.pop (yylen);
     yylen = 0;
@@ -2156,8 +2154,8 @@ class YYParser
               return yyr.toString ();
             }
       }
-    else if (yystr.equals (""))
-      return "";
+    else if (yystr.equals ("$end"))
+      return "end of input";
 
     return yystr;
   }
@@ -2170,8 +2168,8 @@ class YYParser
 			         Object yyvaluep				 )
   {
     if (yydebug > 0)
-    yycdebug (s + (yytype < yyntokens_ ? "" : " nterm ")
-	      + yytname_[yytype] + ""
+    yycdebug (s + (yytype < yyntokens_ ? " token " : " nterm ")
+	      + yytname_[yytype] + " ("
 	      + (yyvaluep == null ? "(null)" : yyvaluep.toString ()) + ")");
   }
 
@@ -2204,7 +2202,7 @@ class YYParser
 
     int yyresult;
 
-    yycdebug ("n");
+    yycdebug ("Starting parse\n");
     yyerrstatus_ = 0;
 
 
@@ -2218,93 +2216,93 @@ class YYParser
         /* New state.  Unlike in the C/C++ skeletons, the state is already
 	   pushed when we come here.  */
       case YYNEWSTATE:
-        yycdebug ("" + yystate + "\n");
+        yycdebug ("Entering state " + yystate + "\n");
         if (yydebug > 0)
           yystack.print (yyDebugStream);
-    
+
         /* Accept?  */
         if (yystate == yyfinal_)
           return true;
-    
+
         /* Take a decision.  First try without lookahead.  */
         yyn = yypact_[yystate];
-        if (yyn == yypact_ninf_)
+        if (yy_pact_value_is_default_ (yyn))
           {
             label = YYDEFAULT;
 	    break;
           }
-    
+
         /* Read a lookahead token.  */
         if (yychar == yyempty_)
           {
-	    yycdebug ("");
+	    yycdebug ("Reading a token: ");
 	    yychar = yylex ();
             
             yylval = yylexer.getLVal ();
           }
-    
+
         /* Convert token to internal form.  */
         if (yychar <= EOF)
           {
 	    yychar = yytoken = EOF;
-	    yycdebug ("n");
+	    yycdebug ("Now at end of input.\n");
           }
         else
           {
 	    yytoken = yytranslate_ (yychar);
-	    yy_symbol_print ("", yytoken,
-	    		     yylval);
+	    yy_symbol_print ("Next token is", yytoken,
+			     yylval);
           }
-    
+
         /* If the proper action on seeing token YYTOKEN is to reduce or to
            detect an error, take that action.  */
         yyn += yytoken;
         if (yyn < 0 || yylast_ < yyn || yycheck_[yyn] != yytoken)
           label = YYDEFAULT;
-    
+
         /* <= 0 means reduce or error.  */
         else if ((yyn = yytable_[yyn]) <= 0)
           {
-	    if (yyn == 0 || yyn == yytable_ninf_)
-	      label = YYFAIL;
+	    if (yy_table_value_is_error_ (yyn))
+	      label = YYERRLAB;
 	    else
 	      {
 	        yyn = -yyn;
 	        label = YYREDUCE;
 	      }
           }
-    
+
         else
           {
             /* Shift the lookahead token.  */
-	    yy_symbol_print ("", yytoken,
-	    		     yylval);
-    
+	    yy_symbol_print ("Shifting", yytoken,
+			     yylval);
+
             /* Discard the token being shifted.  */
             yychar = yyempty_;
-    
+
             /* Count tokens shifted since error; after three, turn off error
                status.  */
             if (yyerrstatus_ > 0)
               --yyerrstatus_;
-    
+
             yystate = yyn;
             yystack.push (yystate, yylval);
             label = YYNEWSTATE;
           }
         break;
-    
+
       /*-----------------------------------------------------------.
       | yydefault -- do the default action for the current state.  |
       `-----------------------------------------------------------*/
       case YYDEFAULT:
         yyn = yydefact_[yystate];
         if (yyn == 0)
-          label = YYFAIL;
+          label = YYERRLAB;
         else
           label = YYREDUCE;
         break;
-    
+
       /*-----------------------------.
       | yyreduce -- Do a reduction.  |
       `-----------------------------*/
@@ -2313,24 +2311,26 @@ class YYParser
         label = yyaction (yyn, yystack, yylen);
 	yystate = yystack.stateAt (0);
         break;
-    
+
       /*------------------------------------.
       | yyerrlab -- here on detecting error |
       `------------------------------------*/
-      case YYFAIL:
+      case YYERRLAB:
         /* If not already recovering from an error, report this error.  */
         if (yyerrstatus_ == 0)
           {
-	    ++yynerrs_;
-	    yyerror (yysyntax_error (yystate, yytoken));
+            ++yynerrs_;
+            if (yychar == yyempty_)
+              yytoken = yyempty_;
+            yyerror (yysyntax_error (yystate, yytoken));
           }
-    
+
         
         if (yyerrstatus_ == 3)
           {
 	    /* If just tried and failed to reuse lookahead token after an
 	     error, discard it.  */
-    
+
 	    if (yychar <= EOF)
 	      {
 	      /* Return failure if at end of input.  */
@@ -2340,17 +2340,17 @@ class YYParser
 	    else
 	      yychar = yyempty_;
           }
-    
+
         /* Else will try to reuse lookahead token after shifting the error
            token.  */
         label = YYERRLAB1;
         break;
-    
+
       /*---------------------------------------------------.
       | errorlab -- error raised explicitly by YYERROR.  |
       `---------------------------------------------------*/
       case YYERROR:
-    
+
         
         /* Do not reclaim the symbols of the rule which action triggered
            this YYERROR.  */
@@ -2359,17 +2359,17 @@ class YYParser
         yystate = yystack.stateAt (0);
         label = YYERRLAB1;
         break;
-    
+
       /*-------------------------------------------------------------.
       | yyerrlab1 -- common code for both syntax error and YYERROR.  |
       `-------------------------------------------------------------*/
       case YYERRLAB1:
         yyerrstatus_ = 3;	/* Each real token shifted decrements this.  */
-    
+
         for (;;)
           {
 	    yyn = yypact_[yystate];
-	    if (yyn != yypact_ninf_)
+	    if (!yy_pact_value_is_default_ (yyn))
 	      {
 	        yyn += yyterror_;
 	        if (0 <= yyn && yyn <= yylast_ && yycheck_[yyn] == yyterror_)
@@ -2379,33 +2379,33 @@ class YYParser
 		      break;
 	          }
 	      }
-    
+
 	    /* Pop the current state because it cannot handle the error token.  */
 	    if (yystack.height == 1)
 	      return false;
-    
+
 	    
 	    yystack.pop ();
 	    yystate = yystack.stateAt (0);
 	    if (yydebug > 0)
 	      yystack.print (yyDebugStream);
           }
-    
+
 	
 
         /* Shift the error token.  */
-        yy_symbol_print ("", yystos_[yyn],
+        yy_symbol_print ("Shifting", yystos_[yyn],
 			 yylval);
-    
+
         yystate = yyn;
 	yystack.push (yyn, yylval);
         label = YYNEWSTATE;
         break;
-    
+
         /* Accept.  */
       case YYACCEPT:
         return true;
-    
+
         /* Abort.  */
       case YYABORT:
         return false;
@@ -2417,44 +2417,96 @@ class YYParser
   {
     if (errorVerbose)
       {
-        int yyn = yypact_[yystate];
-        if (yypact_ninf_ < yyn && yyn <= yylast_)
+        /* There are many possibilities here to consider:
+           - Assume YYFAIL is not used.  It's too flawed to consider.
+             See
+             <http://lists.gnu.org/archive/html/bison-patches/2009-12/msg00024.html>
+             for details.  YYERROR is fine as it does not invoke this
+             function.
+           - If this state is a consistent state with a default action,
+             then the only way this function was invoked is if the
+             default action is an error action.  In that case, don't
+             check for expected tokens because there are none.
+           - The only way there can be no lookahead present (in tok) is
+             if this state is a consistent state with a default action.
+             Thus, detecting the absence of a lookahead is sufficient to
+             determine that there is no unexpected or expected token to
+             report.  In that case, just report a simple "syntax error".
+           - Don't assume there isn't a lookahead just because this
+             state is a consistent state with a default action.  There
+             might have been a previous inconsistent state, consistent
+             state with a non-default action, or user semantic action
+             that manipulated yychar.  (However, yychar is currently out
+             of scope during semantic actions.)
+           - Of course, the expected token list depends on states to
+             have correct lookahead information, and it depends on the
+             parser not to perform extra reductions after fetching a
+             lookahead from the scanner and before detecting a syntax
+             error.  Thus, state merging (from LALR or IELR) and default
+             reductions corrupt the expected token list.  However, the
+             list is correct for canonical LR with one exception: it
+             will still contain any token that will not be accepted due
+             to an error action in a later state.
+        */
+        if (tok != yyempty_)
           {
-	    StringBuffer res;
-
-	    /* Start YYX at -YYN if negative to avoid negative indexes in
-	       YYCHECK.  */
-	    int yyxbegin = yyn < 0 ? -yyn : 0;
-
-	    /* Stay within bounds of both yycheck and yytname.  */
-	    int yychecklim = yylast_ - yyn + 1;
-	    int yyxend = yychecklim < yyntokens_ ? yychecklim : yyntokens_;
-	    int count = 0;
-	    for (int x = yyxbegin; x < yyxend; ++x)
-	      if (yycheck_[x + yyn] == x && x != yyterror_)
-	        ++count;
-
-	    // FIXME: This method of building the message is not compatible
-	    // with internationalization.
-	    res = new StringBuffer ("");
-	    res.append (yytnamerr_ (yytname_[tok]));
-	    if (count < 5)
-	      {
-	        count = 0;
-	        for (int x = yyxbegin; x < yyxend; ++x)
-	          if (yycheck_[x + yyn] == x && x != yyterror_)
-		    {
-		      res.append (count++ == 0 ? "" : " or ");
-		      res.append (yytnamerr_ (yytname_[x]));
-		    }
-	      }
-	    return res.toString ();
+            // FIXME: This method of building the message is not compatible
+            // with internationalization.
+            StringBuffer res =
+              new StringBuffer ("syntax error, unexpected ");
+            res.append (yytnamerr_ (yytname_[tok]));
+            int yyn = yypact_[yystate];
+            if (!yy_pact_value_is_default_ (yyn))
+              {
+                /* Start YYX at -YYN if negative to avoid negative
+                   indexes in YYCHECK.  In other words, skip the first
+                   -YYN actions for this state because they are default
+                   actions.  */
+                int yyxbegin = yyn < 0 ? -yyn : 0;
+                /* Stay within bounds of both yycheck and yytname.  */
+                int yychecklim = yylast_ - yyn + 1;
+                int yyxend = yychecklim < yyntokens_ ? yychecklim : yyntokens_;
+                int count = 0;
+                for (int x = yyxbegin; x < yyxend; ++x)
+                  if (yycheck_[x + yyn] == x && x != yyterror_
+                      && !yy_table_value_is_error_ (yytable_[x + yyn]))
+                    ++count;
+                if (count < 5)
+                  {
+                    count = 0;
+                    for (int x = yyxbegin; x < yyxend; ++x)
+                      if (yycheck_[x + yyn] == x && x != yyterror_
+                          && !yy_table_value_is_error_ (yytable_[x + yyn]))
+                        {
+                          res.append (count++ == 0 ? ", expecting " : " or ");
+                          res.append (yytnamerr_ (yytname_[x]));
+                        }
+                  }
+              }
+            return res.toString ();
           }
       }
 
-    return "";
+    return "syntax error";
   }
 
+  /**
+   * Whether the given <code>yypact_</code> value indicates a defaulted state.
+   * @param yyvalue   the value to check
+   */
+  private static boolean yy_pact_value_is_default_ (int yyvalue)
+  {
+    return yyvalue == yypact_ninf_;
+  }
+
+  /**
+   * Whether the given <code>yytable_</code> value indicates a syntax error.
+   * @param yyvalue   the value to check
+   */
+  private static boolean yy_table_value_is_error_ (int yyvalue)
+  {
+    return yyvalue == yytable_ninf_;
+  }
 
   /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
      STATE-NUM.  */
@@ -2485,9 +2537,9 @@ class YYParser
      127,  -133
   };
 
-  /* YYDEFACT[S] -- default rule to reduce with in state S when YYTABLE
-     doesn't specify something else to do.  Zero means the default is an
-     error.  */
+  /* YYDEFACT[S] -- default reduction number in state S.  Performed when
+     YYTABLE doesn't specify something else to do.  Zero means the
+     default is an error.  */
   private static final byte yydefact_[] =
   {
          6,     0,     4,     1,     0,     3,     0,     0,     0,     0,
@@ -2539,7 +2591,7 @@ class YYParser
 
   /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
      positive, shift that token.  If negative, reduce the rule which
-     number is the opposite.  If zero, do what YYDEFACT says.  */
+     number is the opposite.  If YYTABLE_NINF_, syntax error.  */
   private static final short yytable_ninf_ = -75;
   private static final short
   yytable_[] =
@@ -2677,7 +2729,7 @@ class YYParser
      First, the terminals, then, starting at \a yyntokens_, nonterminals.  */
   private static final String yytname_[] =
   {
-          "", "error", "$undefined", "tok_identifier", "tok_literal",
+    "$end", "error", "$undefined", "tok_identifier", "tok_literal",
   "tok_doctext", "tok_st_identifier", "tok_int_constant",
   "tok_dub_constant", "tok_include", "tok_namespace", "tok_cpp_namespace",
   "tok_cpp_include", "tok_cpp_type", "tok_php_namespace", "tok_py_module",
@@ -2792,12 +2844,12 @@ class YYParser
     int yylno = yyrline_[yyrule];
     int yynrhs = yyr2_[yyrule];
     /* Print the symbols being reduced, and their result.  */
-    yycdebug ("" + (yyrule - 1)
+    yycdebug ("Reducing stack by rule " + (yyrule - 1)
 	      + " (line " + yylno + "), ");
 
     /* The symbols being reduced.  */
     for (int yyi = 0; yyi < yynrhs; yyi++)
-      yy_symbol_print ("" + (yyi + 1) + " =",
+      yy_symbol_print ("   $" + (yyi + 1) + " =",
 		       yyrhs_[yyprhs_[yyrule] + yyi],
 		       ((yystack.valueAt (yynrhs-(yyi + 1)))));
   }
@@ -2862,7 +2914,7 @@ class YYParser
 }
 
 
-/* Line 879 of lalr1.java  */
+/* Line 931 of lalr1.java  */
 /* Line 1149 of "thrifty.jy"  */
 
 

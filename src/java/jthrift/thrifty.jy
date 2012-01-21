@@ -1,5 +1,5 @@
 %code imports {
-package jthrift.jparser;
+package jthrift;
 
 import java.util.Map;
 import java.util.List;

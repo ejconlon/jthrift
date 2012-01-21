@@ -1,4 +1,4 @@
-package jthrift.jparser;
+package jthrift;
 
 class sym {
     public static final int EOF = YYParser.EOF;
