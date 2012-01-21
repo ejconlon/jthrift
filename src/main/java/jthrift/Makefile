@@ -16,10 +16,10 @@ jparse: YYParser.java YYLexer.java
 	javac -g -source 1.6 -target 1.6 *.java
 
 testparse: jparse
-	cd ..; java jthrift.JParse parse ../../examples/userstorage.thrift
+	cd ..; java jthrift.JParse parse ../../../examples/userstorage.thrift
 
 testlex: jparse
-	cd ..; java jthrift.JParse lex ../../examples/userstorage.thrift
+	cd ..; java jthrift.JParse lex ../../../examples/userstorage.thrift
 
 testrunner: jparse
 	cd ..; java -enableassertions jthrift.TestRunner
