@@ -1,3 +1,8 @@
-A port of the Thrift IDL parser + code generator to Java.
+The start of a port of the Thrift IDL parser + code generator to Java.
 
 Contains code from the Apache-licensed Thrift project.  See license and readme files in src/cpp/cparser for details.
+
+PROJECT STATUS:
+I ported over the parser and lexer to generate a Java AST for Thrift IDL.  My eventual goal is to add some extensions to the IDL (parametric structs and interfaces, bundles of interfaces), parse and process them, then serialize them to IDL without extensions. (Tackling the code generator part would be awful.)
+
+The AST is pretty complete but may lack some accessors.  Cross-file loading is borked, and I wouldn't trust doc refs.
